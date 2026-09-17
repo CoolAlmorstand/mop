@@ -1,0 +1,9 @@
+{
+  "name": "mop",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared-types"
+  ]
+}
