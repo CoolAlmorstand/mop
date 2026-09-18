@@ -3,6 +3,13 @@
 	<meta name="description" content="MOP main menu" />
 </svelte:head>
 
+<script lang="ts">
+  import { goto } from "$app/navigation";
+
+
+</script>
+
+
 <main
 	class="grid min-h-screen place-items-center bg-[#f4f0e7] bg-[radial-gradient(#b7b0a1_0.7px,transparent_0.7px)] bg-[size:5px_5px] p-5 font-mono text-[#191716] sm:p-7"
 >
@@ -29,7 +36,7 @@
 		<nav class="mt-[41px]" aria-label="Main navigation">
 			<ul class="space-y-3">
 				<li>
-					<button class="grid w-full grid-cols-[28px_1fr_auto] items-center gap-2 border-2 border-[#191716] bg-[#191716] px-[15px] py-4 text-left font-mono text-[0.95rem] font-bold tracking-[0.09em] text-[#fffefa] transition hover:-translate-x-[3px] hover:-translate-y-[3px] hover:bg-[#31302d] hover:shadow-[4px_4px_0_#191716] focus-visible:-translate-x-[3px] focus-visible:-translate-y-[3px] focus-visible:bg-[#31302d] focus-visible:shadow-[4px_4px_0_#191716] focus-visible:outline-none" type="button">
+					<button onclick={() => goto("/games")} class="grid w-full grid-cols-[28px_1fr_auto] items-center gap-2 border-2 border-[#191716] bg-[#191716] px-[15px] py-4 text-left font-mono text-[0.95rem] font-bold tracking-[0.09em] text-[#fffefa] transition hover:-translate-x-[3px] hover:-translate-y-[3px] hover:bg-[#31302d] hover:shadow-[4px_4px_0_#191716] focus-visible:-translate-x-[3px] focus-visible:-translate-y-[3px] focus-visible:bg-[#31302d] focus-visible:shadow-[4px_4px_0_#191716] focus-visible:outline-none" type="button">
 						<span aria-hidden="true">▶</span><span>PLAY</span><span class="text-[0.65rem] opacity-70" aria-hidden="true">01</span>
 					</button>
 				</li>
