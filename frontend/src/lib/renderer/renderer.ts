@@ -1,24 +1,35 @@
+import type { IPixiMapRenderer } from "$lib/interfaces/map-renderer";
 import type { IMopRenderer } from "$lib/interfaces/renderer";
-import type { Application, ContainerChild } from "pixi.js";
+import type { Application, Container, ContainerChild } from "pixi.js";
 import { Graphics } from "pixi.js";
 
 export class PixiRenderer implements IMopRenderer {
   private app: Application;  
 
-  //Record<entityId, ContainerChild>
-  private displayObjects: Record<string, ContainerChild> = {};
+  //Record<containerIndex, ContainerChild>
+  private displayContainers: Record<number, ContainerChild> = {};
+  private mapRenderer: IPixiMapRenderer;
 
 
-  constructor(app: Application) {
+  constructor(app: Application, mapRenderer: IPixiMapRenderer) {
     this.app = app
+    this.mapRenderer = mapRenderer
+
+    this.mountContainer(0, this.mapRenderer.container) 
+  }
+
+  private mountContainer(zIndex: number, container: Container): void {
+    container.zIndex = zIndex
+
+    this.displayContainers[zIndex] = container 
+    this.app.stage.addChild(container)
   }
 
   start(): void {
     this.app.ticker.add((ticker) => {
-      this.displayObjects["a"].y ++ 
-      this.displayObjects["a"].x ++ 
+      // this.displayObjects["a"].y ++ 
+      // this.displayObjects["a"].x ++ 
     })  
-
   }
 
   pause(): void {
@@ -26,10 +37,8 @@ export class PixiRenderer implements IMopRenderer {
   }
 
   renderTest(): void {
-    const rectangle = new Graphics().rect(20, 20, 40, 40).fill("#ffffff") 
-
-    this.displayObjects["a"] = rectangle
-    this.app.stage.addChild(rectangle)
+    
+    this.mapRenderer.test()
   }
 }
 
