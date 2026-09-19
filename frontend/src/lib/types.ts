@@ -1,9 +1,8 @@
 import type { Texture } from "pixi.js";
+import type { ITilesId } from "@mop/shared-types"
 
 
 
 
-
-// Record<tileId, Texure>
-export type ITilesTexureMap = Record<string, Texture>
+export type ITilesTexureMap = Record<ITilesId, Texture>
 
