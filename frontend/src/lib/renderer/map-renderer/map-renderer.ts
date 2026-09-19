@@ -1,12 +1,15 @@
 
 import type { IPixiMapRenderer } from "$lib/interfaces/map-renderer"
+import type { ITilesTexureMap } from "$lib/types"
+
 import { Container, Graphics } from "pixi.js"
 
 export class PixiMapRenderer implements IPixiMapRenderer {
+  private textureMap: ITilesTexureMap; 
   container: Container = new Container() 
 
-  constructor() {
-
+  constructor(textureMap: ITilesTexureMap) {
+    this.textureMap = textureMap
   }
 
   test(): void {
