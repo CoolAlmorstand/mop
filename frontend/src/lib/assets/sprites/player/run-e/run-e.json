@@ -1,0 +1,16 @@
+{
+  "frames": {
+    "run_e_1": { "frame": { "x": 0  , "y": 0  , "w": 32, "h": 48 } },
+    "run_e_2": { "frame": { "x": 32 , "y": 0  , "w": 32, "h": 48 } },
+    "run_e_3": { "frame": { "x": 64 , "y": 0  , "w": 32, "h": 48 } },
+    "run_e_4": { "frame": { "x": 96 , "y": 0  , "w": 32, "h": 48 } }
+  },
+  "animations": {
+    "run_e": ["run_e_1", "run_e_2", "run_e_3", "run_e_4"]
+  },
+  "meta": {
+    "image": "run-e.png",
+    "size": { "w": 128, "h": 48 },
+    "scale": "1"
+  }
+}
