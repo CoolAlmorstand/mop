@@ -1,5 +1,7 @@
 
-import { Application } from "pixi.js";
+import { Application, TextureStyle } from "pixi.js";
+
+TextureStyle.defaultOptions.scaleMode = "nearest";
 
 export async function createPixiApp(width: number, height: number, container: HTMLDivElement): Promise<Application> {
 

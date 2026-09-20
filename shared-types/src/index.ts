@@ -1,1 +1,4 @@
-export {};
+
+
+export type ITilesId = "grass" | "sand"
+
