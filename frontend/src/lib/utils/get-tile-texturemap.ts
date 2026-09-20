@@ -1,7 +1,8 @@
 
 import { XMLParser } from "fast-xml-parser";
-import { Rectangle, Texture } from "pixi.js";
+import { Assets, Rectangle, Texture } from "pixi.js";
 import type { ITilesTexturemap, ITileOrientation } from "$lib/types";
+import type { ITilesId } from "@mop/shared-types";
 
 type Tileset = {
   tileset: {
@@ -11,9 +12,7 @@ type Tileset = {
     image: { source: string };
     tile?: { id: number | string; type?: string } | { id: number | string; type?: string }[];
     properties?: {
-      property:
-        | { name: string; value?: string }
-        | { name: string; value?: string }[];
+      property: Record<string, string>
     };
   };
 };
@@ -51,16 +50,17 @@ function getImageUrl(tilesetPath: string, imageSource: string): string | undefin
   return imageFiles[`${directory}${imageSource}`];
 }
 
-function getTileId(tileset: Tileset["tileset"]): keyof ITilesTexturemap | undefined {
+function getTileId(tileset: Tileset["tileset"]): ITilesId {
   const properties = tileset.properties?.property;
-  const tileIdProperty = (Array.isArray(properties) ? properties : properties ? [properties] : []).find(
-    (property) => property.name === "tileId",
-  );
 
-  return tileIdProperty?.value as keyof ITilesTexturemap | undefined;
+  if(!properties || !properties.tileId) {
+    throw new Error("failed to parse tileset tileId property does not exist")
+  }
+
+  return properties.tileId as ITilesId
 }
 
-export function getTileTextureMap(): ITilesTexturemap {
+export async function getTileTextureMap(): Promise<ITilesTexturemap> {
   const textureMap: ITilesTexturemap = {};
 
   for (const [tilesetPath, xml] of Object.entries(tilesetFiles)) {
@@ -72,7 +72,7 @@ export function getTileTextureMap(): ITilesTexturemap {
     const tileId = getTileId(tileset);
     if (!tileId) continue;
 
-    const sourceTexture = Texture.from(imageUrl);
+    const sourceTexture = await Assets.load<Texture>(imageUrl);
     const tileWidth = Number(tileset.tilewidth);
     const tileHeight = Number(tileset.tileheight);
     const columns = Number(tileset.columns);
