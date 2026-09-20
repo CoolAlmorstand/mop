@@ -2,14 +2,14 @@
 <tileset version="1.10"
           tiledversion="1.11.0"
           name="dual-grid-terrain"
-          tilewidth="32"
-          tileheight="32"
+          tilewidth="16"
+          tileheight="16"
           tilecount="16"
           columns="4">
     <properties>
         <property tileId="grass"/>
     </properties>
-    <image source="terrain.png"
+    <image source="grass.png"
            width="128"
            height="128"/>
 
