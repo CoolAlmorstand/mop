@@ -1,7 +1,7 @@
 
 import { XMLParser } from "fast-xml-parser";
 import { Rectangle, Texture } from "pixi.js";
-import type { ITilesTexturemap, TileOrientation } from "$lib/types";
+import type { ITilesTexturemap, ITileOrientation } from "$lib/types";
 
 type Tileset = {
   tileset: {
@@ -84,7 +84,7 @@ export function getTileTextureMap(): ITilesTexturemap {
       if (!tile.type) continue;
 
       const index = Number(tile.id);
-      textureMap[tileId][tile.type as TileOrientation] = new Texture({
+      textureMap[tileId][tile.type as ITileOrientation] = new Texture({
         source: sourceTexture.source,
         frame: new Rectangle(
           (index % columns) * tileWidth,
