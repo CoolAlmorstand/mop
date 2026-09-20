@@ -1,0 +1,17 @@
+{
+  "frames": {
+    "run_n_1": { "frame": { "x": 0  , "y": 0  , "w": 32, "h": 48 } },
+    "run_n_2": { "frame": { "x": 32 , "y": 0  , "w": 32, "h": 48 } },
+    "run_n_3": { "frame": { "x": 64 , "y": 0  , "w": 32, "h": 48 } },
+    "run_n_4": { "frame": { "x": 96 , "y": 0  , "w": 32, "h": 48 } }
+  },
+  "animations": {
+    "run_n": ["run_n_1", "run_n_2", "run_n_3", "run_n_4"]
+  },
+  "meta": {
+    "image": "run-n.png",
+    "size": { "w": 128, "h": 48 },
+    "scale": "1"
+  }
+}
+
