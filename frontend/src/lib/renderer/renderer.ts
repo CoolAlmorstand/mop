@@ -1,4 +1,5 @@
 import type { IEntityRenderer } from "$lib/interfaces/entity-renderer";
+import type { IGame } from "$lib/interfaces/game";
 import type { IPixiMapRenderer } from "$lib/interfaces/map-renderer";
 import type { IMopRenderer } from "$lib/interfaces/renderer";
 import type { Application, Container } from "pixi.js";
@@ -10,17 +11,32 @@ export class PixiRenderer implements IMopRenderer {
   private displayContainers: Record<number, Container> = {};
   private mapRenderer: IPixiMapRenderer;
   private entityRenderer: IEntityRenderer;
+  private game: IGame
 
 
-  constructor(app: Application, mapRenderer: IPixiMapRenderer, entityRenderer: IEntityRenderer) {
+  constructor(app: Application, mapRenderer: IPixiMapRenderer, entityRenderer: IEntityRenderer, game: IGame) {
     this.app = app
     this.mapRenderer = mapRenderer
     this.entityRenderer = entityRenderer
+    this.game = game
 
     this.mountContainer(0, this.mapRenderer.container) 
     this.mountContainer(1, this.entityRenderer.container)
 
     this.app.stage.scale.set(4,4)
+
+    this.setupGameListeners()
+  }
+
+
+  private setupGameListeners() {
+    this.game.event.on("entitiesMove", (entities) => {
+      
+    })
+
+    this.game.event.on("createPlayer", (playerEntityId) => {
+      this.entityRenderer.createNewEntity("player", playerEntityId)
+    })
   }
 
   private mountContainer(zIndex: number, container: Container): void {
