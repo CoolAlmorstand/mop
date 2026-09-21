@@ -7,6 +7,7 @@ import type { IGameEvents } from "@mop/shared-types";
 import EventEmmitter from "eventemitter3"
 
 import { ENTITIES_BASE_STATS } from "@mop/shared-types"
+import { randomString } from "$lib/utils/random-string";
 
 export class MopGame implements IGame {
   event: EventEmmitter<IGameEvents> = new EventEmmitter()
@@ -24,8 +25,8 @@ export class MopGame implements IGame {
   }
 
   spawnEntity(type: IEntityType, x: number, y: number): string {
-     
-    const id = crypto.randomUUID()
+    const id = randomString(8)
+
     const baseStats = ENTITIES_BASE_STATS[type]
 
     this.entities[id] = {
