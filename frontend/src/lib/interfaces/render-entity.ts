@@ -7,6 +7,10 @@ export interface IRenderEntity {
   spriteSheets: Record<string, Spritesheet>;
   currentSpriteSheet: string;
   animatedSprite: AnimatedSprite;
+
+  //what type of entity this is eg creeper, player, sheep
+  entityType: string;
+  //uuid
   id: string;
 
   playAnimation(name: string, speed: number, loop: boolean): void;
