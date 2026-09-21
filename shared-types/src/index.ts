@@ -1,5 +1,6 @@
 
-import type { IEntityType } from "./index.d"
+export * from "./types"
+import type { IEntityType } from "./types"
 
 type entityStats = {
   speed: number,
