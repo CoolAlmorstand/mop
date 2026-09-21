@@ -6,7 +6,7 @@
     "run_nw_4": { "frame": { "x": 96 , "y": 0  , "w": 32, "h": 48 } }
   },
   "animations": {
-    "run_nw": ["run_nw", "run_nw_2", "run_nw_3", "run_nw_4"]
+    "run_nw": ["run_nw_1", "run_nw_2", "run_nw_3", "run_nw_4"]
   },
   "meta": {
     "image": "run-nw.png",

@@ -7,15 +7,19 @@ export class RenderEntity implements IRenderEntity {
   spriteSheets: Record<string, Spritesheet>;
   currentSpriteSheet: string;
   animatedSprite: AnimatedSprite;
+  entityType: string;
   id: string;
 
-  constructor(spriteSheets: Record<string, Spritesheet>, id: string ) {
+  constructor(spriteSheets: Record<string, Spritesheet>, id: string, entityType: string ) {
     this.id = id
+    this.entityType = entityType
     this.spriteSheets = spriteSheets
+
 
     //initailize defulat Spritesheet 
     const [animationName, defaultSpriteSheet] = Object.entries(spriteSheets)[0]
     this.currentSpriteSheet = animationName
+    console.log(spriteSheets)
     this.animatedSprite = new AnimatedSprite(defaultSpriteSheet.animations[animationName])
 
   }
@@ -37,6 +41,7 @@ export class RenderEntity implements IRenderEntity {
     const spriteSheet = this.spriteSheets[name]
     const animation = spriteSheet?.animations[name]
 
+    console.log(animation)
     if (!animation) {
       throw new Error(`Animation "${name}" does not exist for entity "${this.id}".`)
     }
