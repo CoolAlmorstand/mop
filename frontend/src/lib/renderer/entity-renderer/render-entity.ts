@@ -7,11 +7,14 @@ export class RenderEntity implements IRenderEntity {
   spriteSheets: Record<string, Spritesheet>;
   currentSpriteSheet: string;
   animatedSprite: AnimatedSprite;
+  entityType: string;
   id: string;
 
-  constructor(spriteSheets: Record<string, Spritesheet>, id: string ) {
+  constructor(spriteSheets: Record<string, Spritesheet>, id: string, entityType: string ) {
     this.id = id
+    this.entityType = entityType
     this.spriteSheets = spriteSheets
+
 
     //initailize defulat Spritesheet 
     const [animationName, defaultSpriteSheet] = Object.entries(spriteSheets)[0]
