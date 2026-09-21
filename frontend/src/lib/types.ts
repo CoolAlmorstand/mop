@@ -1,5 +1,6 @@
 import type { Texture } from "pixi.js";
-import type { ITilesId } from "@mop/shared-types"
+import type { ITilesId, IEntityType } from "@mop/shared-types"
+import type { Spritesheet } from "pixi.js";
 
 
 export type ITileOrientation =
@@ -27,3 +28,10 @@ export type ITilesTexturemap = Partial<
 // Kept for existing consumers while the correctly spelled name is adopted.
 export type tileOrientation = ITileOrientation;
 export type ITilesTexureMap = ITilesTexturemap;
+
+
+type animationName = string
+
+export type IEntitySpritesheets = Record<
+  IEntityType, Record<animationName, Spritesheet>
+>
