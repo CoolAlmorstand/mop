@@ -13,7 +13,7 @@ export class MopGame implements IGame {
 
   //id, entity
   private entities: Record<string, IEntity> = {};
-  
+
   constructor() {
 
   }
@@ -36,10 +36,22 @@ export class MopGame implements IGame {
       hitboxtSize: {width: baseStats.hitboxWidth, height: baseStats.hitboxHeight},
       attack: baseStats.attack,
       id,
-
-
     }
     return id
   }
 
+  initGame(): void{
+    const playerEntityId = this.spawnEntity("player", 20, 20) 
+
+    this.event.emit("createPlayer", playerEntityId)
+  }
+
+  startGame(): void {
+  }
 }
+
+
+
+
+
+

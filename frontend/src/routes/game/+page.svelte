@@ -3,6 +3,7 @@
   import { PixiRenderer } from "$lib/renderer/renderer";
   import { PixiMapRenderer } from "$lib/renderer/map-renderer/map-renderer";
   import { RenderEntity } from "$lib/renderer/entity-renderer/render-entity";
+  import { MopGame } from "$lib/game/game"
   import { PixiEnitityRenderer } from "$lib/renderer/entity-renderer/entity-render";
 
   import { getTileTextureMap } from "$lib/utils/get-tile-texturemap";
@@ -15,19 +16,17 @@
 
   onMount(async() => {
     const app = await createPixiApp(divContainer.clientWidth, divContainer.clientHeight, divContainer)
+    const game = new MopGame()
 
     const tilesTextureMap = await getTileTextureMap()
     const entitySpriteSheets = await loadEntitySpritesheets()
 
     const mapRenderer = new PixiMapRenderer(tilesTextureMap)
-    const entityRenderer = new PixiEnitityRenderer()
+    const entityRenderer = new PixiEnitityRenderer(entitySpriteSheets)
 
-    const renderer = new PixiRenderer(app, mapRenderer, entityRenderer)
+    const renderer = new PixiRenderer(app, mapRenderer, entityRenderer, game)
 
-    const player = new RenderEntity(entitySpriteSheets["player"], "1", "player")
-
-    entityRenderer.test(player)
-
+    game.initGame()
     renderer.renderTest()
   })
   

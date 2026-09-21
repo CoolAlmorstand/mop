@@ -10,6 +10,8 @@ export interface IGame {
 
   //spawn an entity and returns the id
   spawnEntity(type: IEntityType, x: number, y: number): string;
+  initGame(): void;
+  startGame(): void
 }
 
 

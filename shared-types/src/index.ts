@@ -18,6 +18,9 @@ export type IEntity = {
 
 export interface IGameEvents {
   entitiesMove: (entities: IEntity[]) => void;
+
+  //returns entityId player entity
+  createPlayer: (entityId: string) => void;
 }
 
 
