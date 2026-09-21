@@ -18,6 +18,6 @@ export class PixiEnitityRenderer implements IEntityRenderer {
     this.entities[entity.id] = entity
     this.container.addChild(entity.animatedSprite)
 
-    entity.playAnimation("run_s", 1, true)
+    entity.playAnimation("run_nw", 0.15, true)
   }
 }

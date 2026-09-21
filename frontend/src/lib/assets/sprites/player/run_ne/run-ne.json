@@ -6,7 +6,7 @@
     "run_ne_4": { "frame": { "x": 96 , "y": 0  , "w": 32, "h": 48 } }
   },
   "animations": {
-    "run_ne": ["run_ne", "run_ne_2", "run_ne_3", "run_ne_4"]
+    "run_ne": ["run_ne_1", "run_ne_2", "run_ne_3", "run_ne_4"]
   },
   "meta": {
     "image": "run-ne.png",

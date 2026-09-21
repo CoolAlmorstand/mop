@@ -19,6 +19,8 @@ export class PixiRenderer implements IMopRenderer {
 
     this.mountContainer(0, this.mapRenderer.container) 
     this.mountContainer(1, this.entityRenderer.container)
+
+    this.app.stage.scale.set(4,4)
   }
 
   private mountContainer(zIndex: number, container: Container): void {
