@@ -1,13 +1,12 @@
 import type { IPixiMapRenderer } from "$lib/interfaces/map-renderer";
 import type { IMopRenderer } from "$lib/interfaces/renderer";
-import type { Application, Container, ContainerChild } from "pixi.js";
-import { Graphics } from "pixi.js";
+import type { Application, Container } from "pixi.js";
 
 export class PixiRenderer implements IMopRenderer {
   private app: Application;  
 
   //Record<containerIndex, ContainerChild>
-  private displayContainers: Record<number, ContainerChild> = {};
+  private displayContainers: Record<number, Container> = {};
   private mapRenderer: IPixiMapRenderer;
 
 
