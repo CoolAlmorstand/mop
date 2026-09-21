@@ -14,3 +14,9 @@ export type IEntity = {
   id: string;
 }
 
+
+
+export interface IGameEvents {
+  entitiesMove: (entities: IEntity[]) => void;
+}
+
