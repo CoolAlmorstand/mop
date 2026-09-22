@@ -76,6 +76,7 @@ export class MopGame implements IGame {
 
     this.gameLoop = setInterval(() => {
       this.event.emit("gameTick")
+      this.event.emit("entitiesMove", Object.values(this.entities))
     }, 1000 / 60)
   }
 

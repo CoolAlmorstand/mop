@@ -44,6 +44,9 @@ export class PixiEnitityRenderer implements IEntityRenderer {
 
     if (entity.currentAction === "running") {
       renderEntity.playAnimation(`run_${entity.direction}`, 0.15, true)
+    } 
+    else if( entity.currentAction === "idle" ) {
+      renderEntity.stopAnimation()
     }
   }
 }

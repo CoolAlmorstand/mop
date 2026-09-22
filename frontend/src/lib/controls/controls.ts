@@ -3,8 +3,8 @@ import type { IMopControls } from "$lib/interfaces/controls";
 import type { IGame } from "$lib/interfaces/game";
 import { Container, Sprite, Texture, type FederatedPointerEvent } from "pixi.js";
 
-const CONTROL_SIZE = 56;
-const JOYSTICK_RADIUS = 54;
+const CONTROL_SIZE = 30;
+const JOYSTICK_RADIUS = 30;
 
 type DirectionName = "up" | "down" | "left" | "right";
 
@@ -26,7 +26,7 @@ export class Controls implements IMopControls {
 
   constructor(private game: IGame, width: number, height: number) {
     // The world is rendered at 4x, but the HUD uses screen pixels.
-    this.container.scale.set(0.25);
+    this.container.scale.set(0.5);
     this.container.eventMode = "static";
 
     this.joystickKnob = this.createJoystick();

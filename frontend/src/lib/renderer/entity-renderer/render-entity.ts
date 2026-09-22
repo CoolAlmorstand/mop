@@ -40,10 +40,8 @@ export class RenderEntity implements IRenderEntity {
     this.currentAnimation = name
   }
 
-  stopAnimation(name: string): void {
-    if(this.currentSpriteSheet != name) {
-      this.animatedSprite.stop()
-    }
+  stopAnimation(): void {
+    this.animatedSprite.stop()
   }
 
   changeSpriteSheet(name: string): void {

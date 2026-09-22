@@ -16,6 +16,6 @@ export interface IRenderEntity {
   id: string;
 
   playAnimation(name: string, speed: number, loop: boolean): void;
-  stopAnimation(name: string): void;
+  stopAnimation(): void;
   changeSpriteSheet(name: string): void;
 }
