@@ -23,6 +23,7 @@ export class PixiRenderer implements IMopRenderer {
     this.mountContainer(0, this.mapRenderer.container) 
     this.mountContainer(1, this.entityRenderer.container)
 
+    this.app.stage.sortableChildren = true
     this.app.stage.scale.set(4,4)
 
     this.setupGameListeners()
@@ -31,7 +32,7 @@ export class PixiRenderer implements IMopRenderer {
 
   private setupGameListeners() {
     this.game.event.on("entitiesMove", (entities) => {
-      
+      entities.forEach((entity) => this.entityRenderer.moveEntity(entity))
     })
 
     this.game.event.on("createPlayer", (playerEntityId) => {
@@ -39,7 +40,7 @@ export class PixiRenderer implements IMopRenderer {
     })
   }
 
-  private mountContainer(zIndex: number, container: Container): void {
+  mountContainer(zIndex: number, container: Container): void {
     container.zIndex = zIndex
 
     this.displayContainers[zIndex] = container 
@@ -62,6 +63,4 @@ export class PixiRenderer implements IMopRenderer {
     this.mapRenderer.test()
   }
 }
-
-
 

@@ -5,6 +5,7 @@
   import { RenderEntity } from "$lib/renderer/entity-renderer/render-entity";
   import { MopGame } from "$lib/game/game"
   import { PixiEnitityRenderer } from "$lib/renderer/entity-renderer/entity-render";
+  import { Controls } from "$lib/controls/controls";
 
   import { getTileTextureMap } from "$lib/utils/get-tile-texturemap";
   import { loadEntitySpritesheets } from "$lib/utils/load-entiry-spritesheets";
@@ -25,9 +26,12 @@
     const entityRenderer = new PixiEnitityRenderer(entitySpriteSheets)
 
     const renderer = new PixiRenderer(app, mapRenderer, entityRenderer, game)
+    const controls = new Controls(game, app.screen.width, app.screen.height)
+    renderer.mountContainer(2, controls.container)
 
     game.initGame()
     renderer.renderTest()
+    game.startGame()
   })
   
 </script>

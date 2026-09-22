@@ -1,7 +1,7 @@
 
 
 import type { IGame } from "$lib/interfaces/game";
-import type { IEntity, IEntityType } from "@mop/shared-types"
+import type { IDirectionVector, IEntity, IEntityType } from "@mop/shared-types"
 import type { IGameEvents } from "@mop/shared-types";
 
 import EventEmmitter from "eventemitter3"
@@ -14,14 +14,26 @@ export class MopGame implements IGame {
 
   //id, entity
   private entities: Record<string, IEntity> = {};
+  private playerEntityId: string | null = null;
+  private gameLoop: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
 
   }
 
-  movePlayer(x: number, y: number, id: string) {
-    this.entities[id].x = x
-    this.entities[id].y = y
+  movePlayer(direction: IDirectionVector): void {
+    if (!this.playerEntityId) {
+      return
+    }
+
+    const player = this.entities[this.playerEntityId]
+    if (!player) {
+      return
+    }
+
+    player.x += direction.x * player.speed
+    player.y += direction.y * player.speed
+    this.event.emit("entitiesMove", [player])
   }
 
   spawnEntity(type: IEntityType, x: number, y: number): string {
@@ -43,15 +55,21 @@ export class MopGame implements IGame {
 
   initGame(): void{
     const playerEntityId = this.spawnEntity("player", 20, 20) 
+    this.playerEntityId = playerEntityId
 
     this.event.emit("createPlayer", playerEntityId)
   }
 
   startGame(): void {
+    if (this.gameLoop) {
+      return
+    }
+
+    this.gameLoop = setInterval(() => {
+      this.event.emit("gameTick")
+    }, 1000 / 60)
   }
 }
-
-
 
 
 

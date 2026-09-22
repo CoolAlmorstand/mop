@@ -14,6 +14,11 @@ export type IEntity = {
   id: string;
 }
 
+export type IDirectionVector = {
+  x: number;
+  y: number;
+}
+
 
 
 export interface IGameEvents {
@@ -24,7 +29,5 @@ export interface IGameEvents {
   gameTick: () => void;
 
 }
-
-
 
 
