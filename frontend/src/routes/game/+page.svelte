@@ -27,7 +27,6 @@
 
     const renderer = new PixiRenderer(app, mapRenderer, entityRenderer, game)
     const controls = new Controls(game, app.screen.width, app.screen.height)
-    renderer.mountContainer(2, controls.container)
 
     game.initGame()
     renderer.renderTest()

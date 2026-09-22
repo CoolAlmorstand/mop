@@ -7,6 +7,7 @@ export class RenderEntity implements IRenderEntity {
 
   spriteSheets: Record<string, Spritesheet>;
   currentSpriteSheet: string;
+  currentAnimation: string;
   animatedSprite: AnimatedSprite;
   entityType: string;
   direction: IEntityDirection = "s";
@@ -21,16 +22,22 @@ export class RenderEntity implements IRenderEntity {
     //initailize defulat Spritesheet 
     const [animationName, defaultSpriteSheet] = Object.entries(spriteSheets)[0]
     this.currentSpriteSheet = animationName
-    console.log(spriteSheets)
+    this.currentAnimation = animationName
     this.animatedSprite = new AnimatedSprite(defaultSpriteSheet.animations[animationName])
 
   }
 
   playAnimation(name: string, speed: number, loop: boolean): void {
+
+    if(this.currentAnimation == name && this.animatedSprite.playing) {
+      return
+    }
+
     this.changeSpriteSheet(name)
     this.animatedSprite.animationSpeed = speed
     this.animatedSprite.loop = loop
     this.animatedSprite.play()
+    this.currentAnimation = name
   }
 
   stopAnimation(name: string): void {
