@@ -35,9 +35,7 @@ export class MopGame implements IGame {
     player.currentAction = isMoving ? "running" : "idle"
 
     if (isMoving) {
-      const verticalDirection = direction.y < 0 ? "n" : direction.y > 0 ? "s" : ""
-      const horizontalDirection = direction.x < 0 ? "w" : direction.x > 0 ? "e" : ""
-      player.direction = `${verticalDirection}${horizontalDirection}` as IEntityDirection
+      player.direction = this.getDirectionFromVector(direction)
       player.x += direction.x * player.speed
       player.y += direction.y * player.speed
     }
@@ -80,7 +78,19 @@ export class MopGame implements IGame {
       this.event.emit("gameTick")
     }, 1000 / 60)
   }
-}
 
+  private getDirectionFromVector(direction: IDirectionVector): IEntityDirection {
+    const angle = Math.atan2(direction.y, direction.x) * (180 / Math.PI)
+
+    if (angle >= -30 && angle < 30) return "e"
+    if (angle >= 30 && angle < 60) return "se"
+    if (angle >= 60 && angle < 120) return "s"
+    if (angle >= 120 && angle < 150) return "sw"
+    if (angle >= 150 || angle < -150) return "w"
+    if (angle >= -150 && angle < -120) return "nw"
+    if (angle >= -120 && angle < -60) return "n"
+    return "ne"
+  }
+}
 
 

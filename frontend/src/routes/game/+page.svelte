@@ -24,9 +24,9 @@
 
     const mapRenderer = new PixiMapRenderer(tilesTextureMap)
     const entityRenderer = new PixiEnitityRenderer(entitySpriteSheets)
-
-    const renderer = new PixiRenderer(app, mapRenderer, entityRenderer, game)
     const controls = new Controls(game, app.screen.width, app.screen.height)
+
+    const renderer = new PixiRenderer(app, mapRenderer, entityRenderer, game, controls)
 
     game.initGame()
     renderer.renderTest()

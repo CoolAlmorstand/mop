@@ -1,4 +1,5 @@
 import type { IDirectionVector } from "@mop/shared-types";
+import type { IMopControls } from "$lib/interfaces/controls";
 import type { IGame } from "$lib/interfaces/game";
 import { Container, Sprite, Texture, type FederatedPointerEvent } from "pixi.js";
 
@@ -15,7 +16,7 @@ const DIRECTIONS: Record<DirectionName, IDirectionVector> = {
 };
 
 /** Collects keyboard and touch movement input for the local player. */
-export class Controls {
+export class Controls implements IMopControls {
   container = new Container();
 
   private activeDirections = new Set<DirectionName>();
