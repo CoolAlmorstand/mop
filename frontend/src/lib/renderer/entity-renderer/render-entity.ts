@@ -1,4 +1,5 @@
 import type { IRenderEntity } from "$lib/interfaces/render-entity";
+import type { IEntityDirection } from "@mop/shared-types";
 import type { Spritesheet } from "pixi.js";
 import { AnimatedSprite } from "pixi.js";
 
@@ -8,6 +9,7 @@ export class RenderEntity implements IRenderEntity {
   currentSpriteSheet: string;
   animatedSprite: AnimatedSprite;
   entityType: string;
+  direction: IEntityDirection = "s";
   id: string;
 
   constructor(spriteSheets: Record<string, Spritesheet>, id: string, entityType: string ) {

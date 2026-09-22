@@ -1,7 +1,7 @@
 
 
 import type { IGame } from "$lib/interfaces/game";
-import type { IDirectionVector, IEntity, IEntityType } from "@mop/shared-types"
+import type { IDirectionVector, IEntity, IEntityDirection, IEntityType } from "@mop/shared-types"
 import type { IGameEvents } from "@mop/shared-types";
 
 import EventEmmitter from "eventemitter3"
@@ -31,8 +31,17 @@ export class MopGame implements IGame {
       return
     }
 
-    player.x += direction.x * player.speed
-    player.y += direction.y * player.speed
+    const isMoving = direction.x !== 0 || direction.y !== 0
+    player.currentAction = isMoving ? "running" : "idle"
+
+    if (isMoving) {
+      const verticalDirection = direction.y < 0 ? "n" : direction.y > 0 ? "s" : ""
+      const horizontalDirection = direction.x < 0 ? "w" : direction.x > 0 ? "e" : ""
+      player.direction = `${verticalDirection}${horizontalDirection}` as IEntityDirection
+      player.x += direction.x * player.speed
+      player.y += direction.y * player.speed
+    }
+
     this.event.emit("entitiesMove", [player])
   }
 
@@ -49,6 +58,8 @@ export class MopGame implements IGame {
       hitboxtSize: {width: baseStats.hitboxWidth, height: baseStats.hitboxHeight},
       attack: baseStats.attack,
       id,
+      direction: "s",
+      currentAction: "idle",
     }
     return id
   }
@@ -70,7 +81,6 @@ export class MopGame implements IGame {
     }, 1000 / 60)
   }
 }
-
 
 
 

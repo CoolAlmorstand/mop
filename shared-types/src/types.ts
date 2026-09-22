@@ -2,6 +2,8 @@
 
 export type ITilesId = "grass" | "sand"
 export type IEntityType = "player" | "sheep"
+export type IEntityDirection = "n" | "ne" | "e" | "se" | "s" | "sw" | "w" | "nw"
+export type IEntityAction = "running" | "idle"
 
 
 export type IEntity = {
@@ -12,6 +14,8 @@ export type IEntity = {
   speed: number;
   attack: number;
   id: string;
+  direction: IEntityDirection;
+  currentAction: IEntityAction;
 }
 
 export type IDirectionVector = {
@@ -29,5 +33,4 @@ export interface IGameEvents {
   gameTick: () => void;
 
 }
-
 

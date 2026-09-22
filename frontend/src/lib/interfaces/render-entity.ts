@@ -1,4 +1,5 @@
 
+import type { IEntityDirection } from "@mop/shared-types";
 import type { AnimatedSprite, Spritesheet } from "pixi.js";
 
 
@@ -10,6 +11,7 @@ export interface IRenderEntity {
 
   //what type of entity this is eg creeper, player, sheep
   entityType: string;
+  direction: IEntityDirection;
   //uuid
   id: string;
 

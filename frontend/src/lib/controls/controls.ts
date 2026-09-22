@@ -118,6 +118,8 @@ export class Controls {
         this.activeDirections.delete(direction);
       }
     });
+    window.addEventListener("pointerup", this.releaseJoystick);
+    window.addEventListener("pointercancel", this.releaseJoystick);
   }
 
   private updateJoystick(event: FederatedPointerEvent): void {
@@ -150,8 +152,8 @@ export class Controls {
     });
 
     const length = Math.hypot(x, y);
-    if (length > 0) {
-      this.game.movePlayer({ x: x / length, y: y / length });
-    }
+    this.game.movePlayer(length > 0
+      ? { x: x / length, y: y / length }
+      : { x: 0, y: 0 });
   };
 }

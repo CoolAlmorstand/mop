@@ -40,5 +40,10 @@ export class PixiEnitityRenderer implements IEntityRenderer {
     }
 
     renderEntity.animatedSprite.position.set(entity.x, entity.y)
+    renderEntity.direction = entity.direction
+
+    if (entity.currentAction === "running") {
+      renderEntity.playAnimation(`run_${entity.direction}`, 0.15, true)
+    }
   }
 }
