@@ -1,5 +1,5 @@
 import type { IEntityRenderer } from "$lib/interfaces/entity-renderer";
-import type { IEntityType } from "@mop/shared-types";
+import type { IEntity, IEntityType } from "@mop/shared-types";
 import type { IRenderEntity } from "$lib/interfaces/render-entity";
 
 import { Container } from "pixi.js";
@@ -31,5 +31,22 @@ export class PixiEnitityRenderer implements IEntityRenderer {
 
     this.entities[entityId] = entity 
     this.container.addChild(entity.animatedSprite)
+  }
+
+  moveEntity(entity: IEntity): void {
+    const renderEntity = this.entities[entity.id]
+    if (!renderEntity) {
+      return
+    }
+
+    renderEntity.animatedSprite.position.set(entity.x, entity.y)
+    renderEntity.direction = entity.direction
+
+    if (entity.currentAction === "running") {
+      renderEntity.playAnimation(`run_${entity.direction}`, 0.15, true)
+    } 
+    else if( entity.currentAction === "idle" ) {
+      renderEntity.stopAnimation()
+    }
   }
 }

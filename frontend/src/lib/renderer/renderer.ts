@@ -1,3 +1,4 @@
+import type { IMopControls } from "$lib/interfaces/controls";
 import type { IEntityRenderer } from "$lib/interfaces/entity-renderer";
 import type { IGame } from "$lib/interfaces/game";
 import type { IPixiMapRenderer } from "$lib/interfaces/map-renderer";
@@ -12,18 +13,22 @@ export class PixiRenderer implements IMopRenderer {
   private mapRenderer: IPixiMapRenderer;
   private entityRenderer: IEntityRenderer;
   private game: IGame
+  private controls: IMopControls
 
 
-  constructor(app: Application, mapRenderer: IPixiMapRenderer, entityRenderer: IEntityRenderer, game: IGame) {
+  constructor(app: Application, mapRenderer: IPixiMapRenderer, entityRenderer: IEntityRenderer, game: IGame, controls: IMopControls) {
     this.app = app
     this.mapRenderer = mapRenderer
     this.entityRenderer = entityRenderer
+    this.controls = controls
     this.game = game
 
     this.mountContainer(0, this.mapRenderer.container) 
     this.mountContainer(1, this.entityRenderer.container)
+    this.mountContainer(2, this.controls.container)
 
-    this.app.stage.scale.set(4,4)
+    this.app.stage.sortableChildren = true
+    this.app.stage.scale.set(2,2)
 
     this.setupGameListeners()
   }
@@ -31,7 +36,7 @@ export class PixiRenderer implements IMopRenderer {
 
   private setupGameListeners() {
     this.game.event.on("entitiesMove", (entities) => {
-      
+      entities.forEach((entity) => this.entityRenderer.moveEntity(entity))
     })
 
     this.game.event.on("createPlayer", (playerEntityId) => {
@@ -39,7 +44,7 @@ export class PixiRenderer implements IMopRenderer {
     })
   }
 
-  private mountContainer(zIndex: number, container: Container): void {
+  mountContainer(zIndex: number, container: Container): void {
     container.zIndex = zIndex
 
     this.displayContainers[zIndex] = container 
@@ -62,6 +67,4 @@ export class PixiRenderer implements IMopRenderer {
     this.mapRenderer.test()
   }
 }
-
-
 
