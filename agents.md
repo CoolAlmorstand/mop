@@ -6,7 +6,7 @@ Only do what was explicitly requested. Do not add extra features, refactors, cle
 follow conventinos folder structures etc
 
 ## Plan before acting
-Before making any change, explain the plan: what you're going to do and how. Wait for that to be understood/approved before touching code.
+Before making any change, explain the plan: what you're going to do and how eg implementation details. Wait for that to be understood/approved before touching code.
 
 ## Approvals
 Don't bundle everything into one giant approval request. Split changes into separate, reviewable chunks and ask for approval on each one individually rather than dumping the whole plan at once.

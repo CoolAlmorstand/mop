@@ -1,9 +1,9 @@
 import type { IDirectionVector } from "@mop/shared-types";
 import type { IMopControls } from "$lib/interfaces/controls";
 import type { IGame } from "$lib/interfaces/game";
-import { Container, Sprite, Texture, type FederatedPointerEvent } from "pixi.js";
+import { Container, Sprite, Text, Texture, type FederatedPointerEvent } from "pixi.js";
 
-const CONTROL_SIZE = 30;
+const CONTROL_SIZE = 50;
 const JOYSTICK_RADIUS = 30;
 
 type DirectionName = "up" | "down" | "left" | "right";
@@ -30,7 +30,7 @@ export class Controls implements IMopControls {
     this.container.eventMode = "static";
 
     this.joystickKnob = this.createJoystick();
-    this.createDirectionButtons(width, height);
+    this.createButtons(width, height);
     this.layout(width, height);
     this.setupKeyboardInput();
 
@@ -66,28 +66,35 @@ export class Controls implements IMopControls {
     return knob;
   }
 
-  private createDirectionButtons(width: number, height: number): void {
-    const positions: Record<DirectionName, IDirectionVector> = {
-      up: { x: 0, y: -1 },
-      down: { x: 0, y: 1 },
-      left: { x: -1, y: 0 },
-      right: { x: 1, y: 0 }
-    };
+  private createButtons(width: number, height: number): void {
+    const labels = ["A", "B", "C", "D"];
+    const startX = width - 126;
+    const startY = height - 126;
 
-    const centerX = width - 96;
-    const centerY = height - 96;
-    (Object.keys(DIRECTIONS) as DirectionName[]).forEach((direction) => {
+    labels.forEach((label, index) => {
+      const buttonContainer = new Container()
+      const text = new Text({
+        text: label,
+        style: {
+          fill: "#ffffff",
+          fontSize: 16
+        }
+      })
       const button = this.createControlSprite(CONTROL_SIZE, 0x374151, 0.8);
       button.position.set(
-        centerX + positions[direction].x * CONTROL_SIZE,
-        centerY + positions[direction].y * CONTROL_SIZE
+        startX + (index % 2) * CONTROL_SIZE + ( (index % 2) * 10) ,
+        startY + Math.floor(index / 2) * CONTROL_SIZE + ( Math.floor(index / 2) * 10) 
       );
-      button.eventMode = "static";
-      button.cursor = "pointer";
-      button.on("pointerdown", () => this.activeDirections.add(direction));
-      button.on("pointerup", () => this.activeDirections.delete(direction));
-      button.on("pointerupoutside", () => this.activeDirections.delete(direction));
-      this.container.addChild(button);
+      
+      text.position.set(
+        startX + (index % 2) * CONTROL_SIZE + ( (index % 2) * 10) ,
+        startY + Math.floor(index / 2) * CONTROL_SIZE + ( Math.floor(index / 2) * 10)
+      )
+      text.anchor.set(0.5, 0.5)
+
+      buttonContainer.addChild(button);
+      buttonContainer.addChild(text)
+      this.container.addChild(buttonContainer)
     });
   }
 
