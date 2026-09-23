@@ -9,7 +9,7 @@ const JOYSTICK_RADIUS = 30;
 export class Controls implements IMopControls {
   container: Container = new Container();
 
-  private controlSurface: Containaer = new Container();
+  private controlSurface: Container = new Container();
 
   private game: IGame;
   private screenWidth: number;
@@ -20,41 +20,48 @@ export class Controls implements IMopControls {
     y: number;
     width: number
     height: number
-  }>;
+  }> = {};
   
   constructor(game: IGame, screenWidth: number, screenHeight: number) {
     this.game = game;
     this.screenWidth = screenWidth 
     this.screenHeight = screenHeight
+
+    this.setupButtonDefinitions(screenWidth, screenHeight)
+    this.renderActionButtons()
   }
 
   private setupButtonDefinitions(screenWidth: number, screenHeight: number) {
+
+    const actionButtonsSize = 55
+    const actionButtonCornerPadding = 80
+
     this.buttonDefinitions["actionButtonA"] = {
-      x: screenWidth - 80 - 40 - 8,
-      y: screenHeight - 80 - 40 -8,
-      width: 40,
-      height: 40,
+      x: screenWidth - actionButtonCornerPadding - ( actionButtonsSize * 1 ) - 8,
+      y: screenHeight - actionButtonCornerPadding - ( actionButtonsSize * 1 ) - 8,
+      width: actionButtonsSize,
+      height: actionButtonsSize,
     }
 
     this.buttonDefinitions["actionButtonB"] = {
-      x: screenWidth - 80,
-      y: screenHeight - 80 - 40 - 8,
-      width: 40,
-      height: 40,
+      x: screenWidth - actionButtonCornerPadding,
+      y: screenHeight - actionButtonCornerPadding - ( actionButtonsSize * 1 ) - 8,
+      width: actionButtonsSize,
+      height: actionButtonsSize,
     }
 
     this.buttonDefinitions["actionButtonC"] = {
-      x: screenWidth - 80 - 40 - 8,
-      y: screenHeight - 80,
-      width: 40,
-      height: 40,
+      x: screenWidth - actionButtonCornerPadding - ( actionButtonsSize * 1 ) - 8,
+      y: screenHeight - actionButtonCornerPadding,
+      width: actionButtonsSize,
+      height: actionButtonsSize,
     }
 
     this.buttonDefinitions["actionButtonD"] = {
-      x: screenWidth - 80,
-      y: screenHeight - 80,
-      width: 40,
-      height: 40,
+      x: screenWidth - actionButtonCornerPadding,
+      y: screenHeight - actionButtonCornerPadding,
+      width: actionButtonsSize,
+      height: actionButtonsSize,
     }
   }
 
@@ -80,15 +87,17 @@ export class Controls implements IMopControls {
       const text = new Text({
         text: label,
         style: {
-          fill: "#ccc0ff",
-          fontSize: 12,
+          fill: "red",
+          fontSize: 26,
         } 
       })
 
       text.position.set(
-        buttonDefinition.x,
-        buttonDefinition.y
+        buttonDefinition.x + ( buttonDefinition.width / 2 ),
+        buttonDefinition.y + ( buttonDefinition.height / 2 )
       )
+
+      text.anchor.set(0.5, 0.5)
 
       const button = this.createRectangle(buttonDefinition.width, buttonDefinition.height, 0.8)
 
@@ -97,8 +106,12 @@ export class Controls implements IMopControls {
         buttonDefinition.y
       )
 
+
+      console.log(buttonDefinition)
+
       buttonContainer.addChild(button)
       buttonContainer.addChild(text)
+      this.container.addChild(buttonContainer)
     })
 
   }

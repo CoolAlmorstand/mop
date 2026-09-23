@@ -28,7 +28,6 @@ export class PixiRenderer implements IMopRenderer {
     this.mountContainer(2, this.controls.container)
 
     this.app.stage.sortableChildren = true
-    this.app.stage.scale.set(2,2)
 
     this.setupGameListeners()
   }
