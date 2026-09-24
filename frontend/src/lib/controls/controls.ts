@@ -3,13 +3,15 @@ import type { IMopControls } from "$lib/interfaces/controls";
 import type { IGame } from "$lib/interfaces/game";
 import { Container, Sprite, Text, Texture, Rectangle, type FederatedPointerEvent } from "pixi.js";
 
-const CONTROL_SIZE = 50;
-const JOYSTICK_RADIUS = 30;
+
 
 export class Controls implements IMopControls {
   container: Container = new Container();
 
   private controlSurface: Container = new Container();
+
+  //contains all the control sprites for visueal only
+  private controlsContainer: Container = new Container();
 
   private game: IGame;
   private screenWidth: number;
@@ -27,41 +29,65 @@ export class Controls implements IMopControls {
     this.screenWidth = screenWidth 
     this.screenHeight = screenHeight
 
-    this.setupButtonDefinitions(screenWidth, screenHeight)
-    this.renderActionButtons()
+    this.setupButtonDefinitions()
+    this.createActionButtons()
+    this.createJoystick()
+
+    this.controlsContainer.eventMode = "none"
+    this.container.addChild(this.controlsContainer)
+
+    //must be added last inorder to on top of all other elements
+    this.container.addChild(this.controlSurface)
   }
 
-  private setupButtonDefinitions(screenWidth: number, screenHeight: number) {
+  private setupButtonDefinitions() {
 
     const actionButtonsSize = 55
-    const actionButtonCornerPadding = 80
+    const actionButtonCornerPadding = 20
+    const joystickPadding = {x: 20, y: 40}
+    const joystickRadius = 40
+    const joystickKnobSize = 40
 
     this.buttonDefinitions["actionButtonA"] = {
-      x: screenWidth - actionButtonCornerPadding - ( actionButtonsSize * 1 ) - 8,
-      y: screenHeight - actionButtonCornerPadding - ( actionButtonsSize * 1 ) - 8,
+      x: this.screenWidth - actionButtonCornerPadding - ( actionButtonsSize * 2 ) - 8,
+      y: this.screenHeight - actionButtonCornerPadding - ( actionButtonsSize * 2 ) - 8,
       width: actionButtonsSize,
       height: actionButtonsSize,
     }
 
     this.buttonDefinitions["actionButtonB"] = {
-      x: screenWidth - actionButtonCornerPadding,
-      y: screenHeight - actionButtonCornerPadding - ( actionButtonsSize * 1 ) - 8,
+      x: this.screenWidth - actionButtonCornerPadding - actionButtonsSize,
+      y: this.screenHeight - actionButtonCornerPadding - ( actionButtonsSize * 2 ) - 8,
       width: actionButtonsSize,
       height: actionButtonsSize,
     }
 
     this.buttonDefinitions["actionButtonC"] = {
-      x: screenWidth - actionButtonCornerPadding - ( actionButtonsSize * 1 ) - 8,
-      y: screenHeight - actionButtonCornerPadding,
+      x: this.screenWidth - actionButtonCornerPadding - ( actionButtonsSize * 2 ) - 8,
+      y: this.screenHeight - actionButtonCornerPadding - actionButtonsSize,
       width: actionButtonsSize,
       height: actionButtonsSize,
     }
 
     this.buttonDefinitions["actionButtonD"] = {
-      x: screenWidth - actionButtonCornerPadding,
-      y: screenHeight - actionButtonCornerPadding,
+      x: this.screenWidth - actionButtonCornerPadding - actionButtonsSize,
+      y: this.screenHeight - actionButtonCornerPadding - actionButtonsSize,
       width: actionButtonsSize,
       height: actionButtonsSize,
+    }
+
+    this.buttonDefinitions["joystick"] = {
+      x: joystickPadding.x,
+      y: this.screenHeight - ( joystickRadius * 2 ) - joystickPadding.y,
+      width: joystickRadius * 2,
+      height: joystickRadius * 2
+    }
+
+    this.buttonDefinitions["joystickKnob"] = {
+      x: joystickPadding.x + joystickRadius - ( joystickKnobSize / 2 ),
+      y: this.screenHeight - joystickPadding.y - ( joystickRadius * 2 ) + joystickRadius - ( joystickKnobSize / 2 ),
+      width: joystickKnobSize,
+      height: joystickKnobSize
     }
   }
 
@@ -75,11 +101,33 @@ export class Controls implements IMopControls {
     return rect
   }
 
-  private renderActionButtons() {
+  private createJoystick() {
+
+    const joystickDefinition = this.buttonDefinitions["joystick"]
+    const joystickKnobDefinition = this.buttonDefinitions["joystickKnob"]
+
+    const joystick = this.createRectangle(joystickDefinition.width, joystickDefinition.height, 0.5)
+    const joystickKnob = this.createRectangle(joystickKnobDefinition.width, joystickKnobDefinition.height, 0.9 )
+
+    joystick.position.set(
+      joystickDefinition.x,
+      joystickDefinition.y
+    )
+
+    joystickKnob.position.set(
+      joystickKnobDefinition.x,
+      joystickKnobDefinition.y
+    )
+
+    this.controlsContainer.addChild(joystick)
+    this.controlsContainer.addChild(joystickKnob)
+  }
+
+  private createActionButtons() {
 
     const actionButtons = ["A", "B", "C", "D"]
 
-    actionButtons.forEach((label, index) => {
+    actionButtons.forEach((label) => {
       const buttonDefinition = this.buttonDefinitions[`actionButton${label}`]
 
       const buttonContainer = new Container();
@@ -106,14 +154,10 @@ export class Controls implements IMopControls {
         buttonDefinition.y
       )
 
-
-      console.log(buttonDefinition)
-
       buttonContainer.addChild(button)
       buttonContainer.addChild(text)
-      this.container.addChild(buttonContainer)
+      this.controlsContainer.addChild(buttonContainer)
     })
-
   }
 }
 
