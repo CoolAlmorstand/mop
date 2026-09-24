@@ -100,6 +100,13 @@ export class Controls implements IMopControls {
       }
     })
 
+    this.controlSurface.on("pointerupoutside", (event) => {
+      if(this.joystickPointerId == event.pointerId) {
+        this.updateJoystick(0, 0)
+        this.joystickPointerId = null
+      }
+    })
+
     this.controlSurface.on("pointertap", (event) => {
       const hitButton = this.getHitButton(event.x, event.y)
     })
@@ -198,8 +205,6 @@ export class Controls implements IMopControls {
       x: joystickKnobDefinition.x + ( x * scale ),
       y: joystickKnobDefinition.y + ( y * scale )
     }
-
-    console.log(knobPosition)
 
     this.buttons["joystickKnob"].position.set(
       knobPosition.x,
