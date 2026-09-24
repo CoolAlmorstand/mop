@@ -2,11 +2,12 @@ import type { IDirectionVector } from "@mop/shared-types";
 import type { IMopControls } from "$lib/interfaces/controls";
 import type { IGame } from "$lib/interfaces/game";
 import { Container, Sprite, Text, Texture, Rectangle, type ContainerChild, type FederatedPointerEvent } from "pixi.js";
+import type { IMopRenderer } from "$lib/interfaces/renderer";
 
 
 
 export class Controls implements IMopControls {
-  container: Container = new Container();
+  private container: Container = new Container();
 
   private controlSurface: Container = new Container();
 
@@ -14,6 +15,7 @@ export class Controls implements IMopControls {
   private controlsContainer: Container = new Container();
 
   private game: IGame;
+  private renderer: IMopRenderer
   private screenWidth: number;
   private screenHeight: number;
   
@@ -29,10 +31,11 @@ export class Controls implements IMopControls {
 
   private buttons: Record<string, ContainerChild> = {};
 
-  constructor(game: IGame, screenWidth: number, screenHeight: number) {
+  constructor(game: IGame, renderer: IMopRenderer, screenWidth: number, screenHeight: number) {
     this.game = game;
     this.screenWidth = screenWidth 
     this.screenHeight = screenHeight
+    this.renderer = renderer
 
     this.setupButtonDefinitions()
     this.createActionButtons()
@@ -44,6 +47,17 @@ export class Controls implements IMopControls {
     //must be added last inorder to on top of all other elements
     this.container.addChild(this.controlSurface)
     this.setupControlSurfaceEvents()
+
+    this.renderer.mountContainer(3, this.container)
+
+
+    this.setupListeners()
+  }
+
+  private setupListeners() {
+    this.game.event.on("gameTick", () => {
+      this.game.movePlayer(this.joystickInputVector)
+    })
   }
 
   private getHitButton(x: number, y: number): string | void {

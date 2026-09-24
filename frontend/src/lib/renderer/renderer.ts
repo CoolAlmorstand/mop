@@ -13,19 +13,15 @@ export class PixiRenderer implements IMopRenderer {
   private mapRenderer: IPixiMapRenderer;
   private entityRenderer: IEntityRenderer;
   private game: IGame
-  private controls: IMopControls
 
-
-  constructor(app: Application, mapRenderer: IPixiMapRenderer, entityRenderer: IEntityRenderer, game: IGame, controls: IMopControls) {
+  constructor(app: Application, mapRenderer: IPixiMapRenderer, entityRenderer: IEntityRenderer, game: IGame) {
     this.app = app
     this.mapRenderer = mapRenderer
     this.entityRenderer = entityRenderer
-    this.controls = controls
     this.game = game
 
     this.mountContainer(0, this.mapRenderer.container) 
     this.mountContainer(1, this.entityRenderer.container)
-    this.mountContainer(2, this.controls.container)
 
     this.app.stage.sortableChildren = true
 
