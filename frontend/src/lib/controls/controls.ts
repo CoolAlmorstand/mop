@@ -1,7 +1,7 @@
 import type { IDirectionVector } from "@mop/shared-types";
 import type { IMopControls } from "$lib/interfaces/controls";
 import type { IGame } from "$lib/interfaces/game";
-import { Container, Sprite, Text, Texture, Rectangle, type FederatedPointerEvent } from "pixi.js";
+import { Container, Sprite, Text, Texture, Rectangle, type ContainerChild, type FederatedPointerEvent } from "pixi.js";
 
 
 
@@ -18,6 +18,7 @@ export class Controls implements IMopControls {
   private screenHeight: number;
   
   private joystickPointerId: number | null = null
+  private joystickInputVector: { x: number, y: number } = {x: 0, y: 0}
 
   private buttonDefinitions: Record<string, {
     x: number;
@@ -25,7 +26,9 @@ export class Controls implements IMopControls {
     width: number
     height: number
   }> = {};
-  
+
+  private buttons: Record<string, ContainerChild> = {};
+
   constructor(game: IGame, screenWidth: number, screenHeight: number) {
     this.game = game;
     this.screenWidth = screenWidth 
@@ -78,15 +81,27 @@ export class Controls implements IMopControls {
 
     this.controlSurface.on("pointerdown", (event) => {
       const hitButton = this.getHitButton(event.x, event.y)
-      if(hitButton == "joystick") {
+      if(hitButton == "joystick" && !this.joystickPointerId) {
         this.joystickPointerId = event.pointerId
       }
     })
 
+    this.controlSurface.on("pointermove", (event) => {
+      if(this.joystickPointerId == event.pointerId) {
+        const { x ,y } = this.controlsContainer.toLocal(event.global)
+        this.updateJoystick(x, y)
+      }
+    })
+
+    this.controlSurface.on("pointerup", (event) => {
+      if(this.joystickPointerId == event.pointerId) {
+        this.updateJoystick(0, 0)
+        this.joystickPointerId = null
+      }
+    })
+
     this.controlSurface.on("pointertap", (event) => {
-      console.log(event.x, event.y)
       const hitButton = this.getHitButton(event.x, event.y)
-      console.log(hitButton)
     })
   }
 
@@ -94,7 +109,7 @@ export class Controls implements IMopControls {
 
     const actionButtonsSize = 55
     const actionButtonCornerPadding = 20
-    const joystickPadding = {x: 20, y: 40}
+    const joystickPadding = {x: 40, y: 40}
     const joystickRadius = 40
     const joystickKnobSize = 40
 
@@ -134,8 +149,8 @@ export class Controls implements IMopControls {
     }
 
     this.buttonDefinitions["joystickKnob"] = {
-      x: joystickPadding.x + joystickRadius - ( joystickKnobSize / 2 ),
-      y: this.screenHeight - joystickPadding.y - ( joystickRadius * 2 ) + joystickRadius - ( joystickKnobSize / 2 ),
+      x: joystickPadding.x + joystickRadius,
+      y: this.screenHeight - joystickPadding.y - joystickRadius,
       width: joystickKnobSize,
       height: joystickKnobSize
     }
@@ -149,6 +164,52 @@ export class Controls implements IMopControls {
     rect.alpha = alpha
 
     return rect
+  }
+
+  private updateJoystick(x: number, y: number) {
+
+    if(x == 0 && y == 0) {
+      this.buttons["joystickKnob"].position.set(
+        this.buttonDefinitions["joystickKnob"].x,
+        this.buttonDefinitions["joystickKnob"].y
+      )
+
+      this.joystickInputVector = {
+        x: 0,
+        y: 0
+      }
+
+      return
+    }
+
+    const joystickDefinition = this.buttonDefinitions["joystick"]
+    const joystickKnobDefinition = this.buttonDefinitions["joystickKnob"]
+
+    x = x - joystickKnobDefinition.x
+    y = y - joystickKnobDefinition.y
+
+    const radius = joystickDefinition.width / 2
+
+    const hypotenuse = Math.hypot(x, y)
+    const scale = hypotenuse > radius ? radius / hypotenuse : 1
+    const throttle = Math.min(hypotenuse / radius, 1)
+
+    const knobPosition = {
+      x: joystickKnobDefinition.x + ( x * scale ),
+      y: joystickKnobDefinition.y + ( y * scale )
+    }
+
+    console.log(knobPosition)
+
+    this.buttons["joystickKnob"].position.set(
+      knobPosition.x,
+      knobPosition.y
+    )
+
+    this.joystickInputVector = {
+      x: ( x / hypotenuse ) * throttle,
+      y: ( y / hypotenuse ) * throttle
+    }
   }
 
   private createJoystick() {
@@ -169,8 +230,12 @@ export class Controls implements IMopControls {
       joystickKnobDefinition.y
     )
 
+    joystickKnob.anchor.set(0.5, 0.5)
+
     this.controlsContainer.addChild(joystick)
     this.controlsContainer.addChild(joystickKnob)
+
+    this.buttons["joystickKnob"] = joystickKnob
   }
 
   private createActionButtons() {
