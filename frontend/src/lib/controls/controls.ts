@@ -16,6 +16,8 @@ export class Controls implements IMopControls {
   private game: IGame;
   private screenWidth: number;
   private screenHeight: number;
+  
+  private joystickPointerId: number | null = null
 
   private buttonDefinitions: Record<string, {
     x: number;
@@ -38,6 +40,54 @@ export class Controls implements IMopControls {
 
     //must be added last inorder to on top of all other elements
     this.container.addChild(this.controlSurface)
+    this.setupControlSurfaceEvents()
+  }
+
+  private getHitButton(x: number, y: number): string | void {
+
+    const globalPos = this.controlSurface.toGlobal({
+      x,
+      y
+    })
+
+    const localPoint = this.controlsContainer.toLocal(globalPos)
+
+    for(const [buttonId, definition] of Object.entries(this.buttonDefinitions)) {
+      if(buttonId == "joystickKnob") {
+        continue
+      }
+      if(localPoint.x < definition.x || localPoint.x > definition.x + definition.width) {
+        continue
+      }
+      if(localPoint.y < definition.y || localPoint.y > definition.y + definition.height) {
+        continue
+      }
+      return buttonId
+    }
+  }
+
+  private setupControlSurfaceEvents() {
+
+    this.controlSurface.eventMode = "static"
+    this.controlSurface.hitArea = new Rectangle(
+      0,
+      0,
+      this.screenWidth,
+      this.screenHeight
+    )
+
+    this.controlSurface.on("pointerdown", (event) => {
+      const hitButton = this.getHitButton(event.x, event.y)
+      if(hitButton == "joystick") {
+        this.joystickPointerId = event.pointerId
+      }
+    })
+
+    this.controlSurface.on("pointertap", (event) => {
+      console.log(event.x, event.y)
+      const hitButton = this.getHitButton(event.x, event.y)
+      console.log(hitButton)
+    })
   }
 
   private setupButtonDefinitions() {
