@@ -32,6 +32,13 @@ export type ITilesTexureMap = ITilesTexturemap;
 
 type spritesheetName = string
 
-export type IEntitySpritesheets = Record<
-  IEntityType, Record<spritesheetName, {animations: string[], spritesheet: Spritesheet}>
->
+
+export type IEntitySpritesheet = {
+  spritesheet: Spritesheet;
+  spritesheetName: string;
+  animations: string[];
+}
+
+export type IEntitySpritesheets = Record<spritesheetName, IEntitySpritesheet>
+export type IEntitiesSpritesheets = Record<IEntityType, IEntitySpritesheets>
+

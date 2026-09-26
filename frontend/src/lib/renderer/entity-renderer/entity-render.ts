@@ -4,7 +4,7 @@ import type { IRenderEntity } from "$lib/interfaces/render-entity";
 
 import { Container } from "pixi.js";
 import { RenderEntity } from "./render-entity";
-import type { IEntitySpritesheets } from "$lib/types";
+import type { IEntitiesSpritesheets } from "$lib/types";
 
 
 export class PixiEnitityRenderer implements IEntityRenderer {
@@ -12,9 +12,9 @@ export class PixiEnitityRenderer implements IEntityRenderer {
 
   // id, IRenderEntity
   private entities: Record<string, IRenderEntity> = {};
-  private entitySpritesheets: IEntitySpritesheets;
+  private entitySpritesheets: IEntitiesSpritesheets;
 
-  constructor(entitySpritesheets: IEntitySpritesheets) {
+  constructor(entitySpritesheets: IEntitiesSpritesheets) {
     this.entitySpritesheets = entitySpritesheets
   }
 
