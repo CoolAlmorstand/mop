@@ -17,10 +17,14 @@ export async function loadEntitySpritesheets(): Promise<IEntitySpritesheets> {
   for (const [spritesheetPath, spritesheetUrl] of Object.entries(spritesheetFiles)) {
     const pathParts = spritesheetPath.split("/");
     const entityType = pathParts.at(-3)! as keyof IEntitySpritesheets;
-    const animationName = pathParts.at(-2)!;
+    const spritesheetName = pathParts.at(-2)!;
+    const spritesheet = await Assets.load<Spritesheet>(spritesheetUrl);
 
     entitySpritesheets[entityType] ??= {};
-    entitySpritesheets[entityType][animationName] = await Assets.load<Spritesheet>(spritesheetUrl);
+    entitySpritesheets[entityType][spritesheetName] = {
+      animations: Object.keys(spritesheet.animations),
+      spritesheet,
+    };
   }
 
   return entitySpritesheets;
