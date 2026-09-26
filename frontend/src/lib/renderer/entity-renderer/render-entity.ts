@@ -1,29 +1,33 @@
 import type { IRenderEntity } from "$lib/interfaces/render-entity";
 import type { IEntityDirection } from "@mop/shared-types";
-import type { Spritesheet } from "pixi.js";
-import { AnimatedSprite } from "pixi.js";
+import type { IEntitySpritesheets, IEntitySpritesheet } from "$lib/types";
+
+import { AnimatedSprite, Spritesheet } from "pixi.js";
 
 export class RenderEntity implements IRenderEntity {
+  private currentSpriteSheet: IEntitySpritesheet;
 
-  spriteSheets: Record<string, Spritesheet>;
-  currentSpriteSheet: string;
+  spriteSheetsMap: IEntitySpritesheets;
   currentAnimation: string;
   animatedSprite: AnimatedSprite;
   entityType: string;
   direction: IEntityDirection = "s";
   id: string;
 
-  constructor(spriteSheets: Record<string, Spritesheet>, id: string, entityType: string ) {
+  constructor(spriteSheets: IEntitySpritesheets, id: string, entityType: string ) {
     this.id = id
     this.entityType = entityType
-    this.spriteSheets = spriteSheets
+    this.spriteSheetsMap = spriteSheets
 
 
     //initailize defulat Spritesheet 
-    const [animationName, defaultSpriteSheet] = Object.entries(spriteSheets)[0]
-    this.currentSpriteSheet = animationName
-    this.currentAnimation = animationName
-    this.animatedSprite = new AnimatedSprite(defaultSpriteSheet.animations[animationName])
+    const defaultSpriteSheet = Object.values(spriteSheets)[0]
+    const defaultAnimation = defaultSpriteSheet.animations[0]
+
+    this.currentSpriteSheet = defaultSpriteSheet 
+    this.currentAnimation = defaultAnimation
+
+    this.animatedSprite = new AnimatedSprite(defaultSpriteSheet.spritesheet.animations[defaultAnimation])
 
   }
 
@@ -33,7 +37,11 @@ export class RenderEntity implements IRenderEntity {
       return
     }
 
-    this.changeSpriteSheet(name)
+    if(!this.currentSpriteSheet.animations.includes(name)) {
+      throw new Error(`animation: ${name} does not exist on current spritesheet: ${this.currentSpriteSheet.spritesheetName}`)
+    }
+
+    this.animatedSprite.textures = this.currentSpriteSheet.spritesheet.animations[name]
     this.animatedSprite.animationSpeed = speed
     this.animatedSprite.loop = loop
     this.animatedSprite.play()
@@ -44,16 +52,20 @@ export class RenderEntity implements IRenderEntity {
     this.animatedSprite.stop()
   }
 
-  changeSpriteSheet(name: string): void {
-    const spriteSheet = this.spriteSheets[name]
-    const animation = spriteSheet?.animations[name]
+  changeSpriteSheet(name: string, animationName?: string): void {
+    const entitySpritesheet = this.spriteSheetsMap[name]
 
-    console.log(animation)
-    if (!animation) {
-      throw new Error(`Animation "${name}" does not exist for entity "${this.id}".`)
+    if (!entitySpritesheet) {
+      throw new Error(`spritesheet "${name}" does not exist for entity "${this.id}".`)
     }
 
-    this.currentSpriteSheet = name
-    this.animatedSprite.textures = animation
+    if(animationName && !entitySpritesheet.animations.includes(animationName)) {
+      throw new Error(`animation: ${animationName} does not exist on spritesheet: ${name}`)
+    }
+
+    const defaultAnimation = animationName ? animationName : entitySpritesheet.animations[0]
+    
+    this.currentSpriteSheet = entitySpritesheet
+    this.animatedSprite.textures = entitySpritesheet.spritesheet.animations[defaultAnimation] 
   }
 }

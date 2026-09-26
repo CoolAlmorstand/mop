@@ -3,7 +3,7 @@
 
 import { Assets } from "pixi.js";
 import type { Spritesheet } from "pixi.js";
-import type { IEntitySpritesheets } from "$lib/types";
+import type { IEntitiesSpritesheets } from "$lib/types";
 
 const spritesheetFiles = import.meta.glob("$lib/assets/sprites/*/*/*.json", {
   eager: true,
@@ -11,16 +11,21 @@ const spritesheetFiles = import.meta.glob("$lib/assets/sprites/*/*/*.json", {
   import: "default",
 }) as Record<string, string>;
 
-export async function loadEntitySpritesheets(): Promise<IEntitySpritesheets> {
-  const entitySpritesheets = {} as IEntitySpritesheets;
+export async function loadEntitySpritesheets(): Promise<IEntitiesSpritesheets> {
+  const entitySpritesheets = {} as IEntitiesSpritesheets;
 
   for (const [spritesheetPath, spritesheetUrl] of Object.entries(spritesheetFiles)) {
     const pathParts = spritesheetPath.split("/");
-    const entityType = pathParts.at(-3)! as keyof IEntitySpritesheets;
-    const animationName = pathParts.at(-2)!;
+    const entityType = pathParts.at(-3)! as keyof IEntitiesSpritesheets;
+    const spritesheetName = pathParts.at(-2)!;
+    const spritesheet = await Assets.load<Spritesheet>(spritesheetUrl);
 
     entitySpritesheets[entityType] ??= {};
-    entitySpritesheets[entityType][animationName] = await Assets.load<Spritesheet>(spritesheetUrl);
+    entitySpritesheets[entityType][spritesheetName] = {
+      animations: Object.keys(spritesheet.animations),
+      spritesheetName,
+      spritesheet,
+    };
   }
 
   return entitySpritesheets;

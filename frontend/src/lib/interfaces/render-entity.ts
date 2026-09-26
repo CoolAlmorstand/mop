@@ -1,12 +1,12 @@
 
 import type { IEntityDirection } from "@mop/shared-types";
+import type { IEntitySpritesheets } from "$lib/types";
 import type { AnimatedSprite, Spritesheet } from "pixi.js";
 
 
 export interface IRenderEntity {
   //animation name, spriteSheet
-  spriteSheets: Record<string, Spritesheet>;
-  currentSpriteSheet: string;
+  spriteSheetsMap: IEntitySpritesheets;
   animatedSprite: AnimatedSprite;
 
   //what type of entity this is eg creeper, player, sheep

@@ -30,8 +30,15 @@ export type tileOrientation = ITileOrientation;
 export type ITilesTexureMap = ITilesTexturemap;
 
 
-type animationName = string
+type spritesheetName = string
 
-export type IEntitySpritesheets = Record<
-  IEntityType, Record<animationName, Spritesheet>
->
+
+export type IEntitySpritesheet = {
+  spritesheet: Spritesheet;
+  spritesheetName: string;
+  animations: string[];
+}
+
+export type IEntitySpritesheets = Record<spritesheetName, IEntitySpritesheet>
+export type IEntitiesSpritesheets = Record<IEntityType, IEntitySpritesheets>
+
