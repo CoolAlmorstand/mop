@@ -43,7 +43,7 @@ export class GameSocket {
 
   private setupIoListeners() {
     this.io.on("connection", (socket) => {
-
+      console.log(`${socket.id} connected`)
       //use auth later to get userId
       socket.data.userId = "1"
 

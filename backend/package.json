@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js"
+    "dev": "node dist/server.js"
   },
   "devDependencies": {
     "@mop/shared-types": "0.0.1",
