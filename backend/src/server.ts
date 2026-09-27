@@ -1,8 +1,8 @@
 import { createServer } from 'node:http';
-import { Server } from 'socket.io';
+import { initializeSocket } from './sockets/initialize-socket.js';
 
 const httpServer = createServer();
-new Server(httpServer);
+initializeSocket(httpServer);
 
 httpServer.listen(3000, () => {
 	console.log('Server listening on port 3000');

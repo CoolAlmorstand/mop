@@ -34,3 +34,19 @@ export interface IGameEvents {
 
 }
 
+
+export type IGameTickData = {
+  entities: IEntity[]
+}
+
+
+export interface GameSocketClientToServer {
+  "playerMove": (data: {x: number, y: number}) => void;
+  "playerJoin": (ack: (playrId: string) => void) => void;
+}
+
+
+export interface GameSocketServerToClient {
+  "gameTick": (data: IGameTickData) => void;
+}
+
