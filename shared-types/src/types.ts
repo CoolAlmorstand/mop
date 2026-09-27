@@ -39,14 +39,17 @@ export type IGameTickData = {
   entities: IEntity[]
 }
 
+export type IGameSocketData = {
+  userId: string;
+}
 
-export interface GameSocketClientToServer {
+export interface IGameSocketClientToServer {
   "playerMove": (data: {x: number, y: number}) => void;
   "playerJoin": (ack: (playrId: string) => void) => void;
 }
 
 
-export interface GameSocketServerToClient {
+export interface IGameSocketServerToClient {
   "gameTick": (data: IGameTickData) => void;
 }
 

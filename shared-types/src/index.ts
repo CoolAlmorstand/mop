@@ -1,6 +1,6 @@
 
-export * from "./types"
-import type { IEntityType } from "./types"
+export * from "./types.js"
+import type { IEntityType } from "./types.js"
 
 type entityStats = {
   speed: number,
