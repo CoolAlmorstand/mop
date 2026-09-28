@@ -56,6 +56,7 @@ export class MopGame implements IGame {
       hitboxtSize: {width: baseStats.hitboxWidth, height: baseStats.hitboxHeight},
       attack: baseStats.attack,
       id,
+      type: type,
       direction: "s",
       currentAction: "idle",
     }
