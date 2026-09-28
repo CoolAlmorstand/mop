@@ -1,6 +1,6 @@
 
 export * from "./types.js"
-import type { IEntityType } from "./types.js"
+import type { IEntityType } from "@mop/game-engine"
 
 type entityStats = {
   speed: number,
