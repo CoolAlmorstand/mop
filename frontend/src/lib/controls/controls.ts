@@ -1,4 +1,3 @@
-import type { IDirectionVector } from "@mop/shared-types";
 import type { IMopControls } from "$lib/interfaces/controls";
 import type { IGame } from "$lib/interfaces/game";
 import { Container, Sprite, Text, Texture, Rectangle, type ContainerChild, type FederatedPointerEvent } from "pixi.js";

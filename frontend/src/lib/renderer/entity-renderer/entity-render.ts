@@ -1,5 +1,5 @@
 import type { IEntityRenderer } from "$lib/interfaces/entity-renderer";
-import type { IEntity, IEntityType } from "@mop/shared-types";
+import type { IEntity, IEntityType } from "@mop/game-engine";
 import type { IRenderEntity } from "$lib/interfaces/render-entity";
 
 import { Container } from "pixi.js";
