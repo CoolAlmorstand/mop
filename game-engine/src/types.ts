@@ -3,6 +3,14 @@ export type IEntityType = "player" | "sheep" | "cat"
 export type IEntityDirection = "n" | "ne" | "e" | "se" | "s" | "sw" | "w" | "nw"
 export type IEntityAction = "running" | "idle"
 
+export interface IGameEvents {
+  entitiesMove: (entities: IEntity[]) => void;
+
+  //returns entityId player entity
+  createPlayer: (entityId: string) => void;
+  gameTick: () => void;
+
+}
 
 export type IEntity = {
   x: number;
