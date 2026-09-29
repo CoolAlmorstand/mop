@@ -4,5 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "types": "./src/index.ts",
-  "main": "./src/index.ts"
+  "main": "./src/index.ts",
+  "dependencies": {
+    "eventemitter3": "^5.0.4"
+  }
 }
