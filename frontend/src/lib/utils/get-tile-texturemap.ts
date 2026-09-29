@@ -2,7 +2,7 @@
 import { XMLParser } from "fast-xml-parser";
 import { Assets, Rectangle, Texture } from "pixi.js";
 import type { ITilesTexturemap, ITileOrientation } from "$lib/types";
-import type { ITilesId } from "@mop/shared-types";
+import type { ITilesId } from "@mop/simulation-engine";
 
 type Tileset = {
   tileset: {

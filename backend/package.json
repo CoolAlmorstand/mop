@@ -8,6 +8,7 @@
     "dev": "node dist/server.js"
   },
   "devDependencies": {
+    "@mop/simulation-engine": "0.0.1",
     "@mop/shared-types": "0.0.1",
     "@types/express": "^5.0.6",
     "@types/node": "^22.20.3",

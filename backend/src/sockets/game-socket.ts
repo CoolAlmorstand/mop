@@ -1,7 +1,8 @@
 
 
 import type { Namespace, Server } from "socket.io"
-import type { IGameSocketClientToServer, IGameSocketServerToClient, IGameTickData, IGameSocketData } from "@mop/shared-types"
+import type { IGameSocketClientToServer, IGameSocketServerToClient, IGameSocketData } from "@mop/shared-types"
+import type { IGameTickData } from "@mop/simulation-engine"
 
 import type { EventEmitter } from "eventemitter3"
 

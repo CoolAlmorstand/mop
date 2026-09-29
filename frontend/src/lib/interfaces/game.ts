@@ -1,5 +1,5 @@
 
-import type { IDirectionVector, IEntityType, IGameEvents } from "@mop/shared-types"
+import type { IDirectionVector, IEntityType, IGameEvents } from "@mop/simulation-engine"
 import type EventEmmitter from "eventemitter3"
 
 

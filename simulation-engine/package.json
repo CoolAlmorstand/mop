@@ -1,11 +1,11 @@
 {
-  "name": "@mop/shared-types",
+  "name": "@mop/simulation-engine",
   "private": true,
   "version": "0.0.1",
   "type": "module",
   "types": "./src/index.ts",
   "main": "./src/index.ts",
-  "devDependencies": {
-    "@mop/simulation-engine": "0.0.1"
+  "dependencies": {
+    "eventemitter3": "^5.0.4"
   }
 }

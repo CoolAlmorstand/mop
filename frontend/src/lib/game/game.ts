@@ -1,13 +1,13 @@
 
 
 import type { IGame } from "$lib/interfaces/game";
-import type { IDirectionVector, IEntity, IEntityDirection, IEntityType } from "@mop/shared-types"
-import type { IGameEvents } from "@mop/shared-types";
+import type { IDirectionVector, IEntity, IEntityDirection, IEntityType, IGameEvents } from "@mop/simulation-engine"
+
+import { ENTITIES_BASE_STATS } from "@mop/simulation-engine"
+import { randomString } from "$lib/utils/random-string";
 
 import EventEmmitter from "eventemitter3"
 
-import { ENTITIES_BASE_STATS } from "@mop/shared-types"
-import { randomString } from "$lib/utils/random-string";
 
 export class MopGame implements IGame {
   event: EventEmmitter<IGameEvents> = new EventEmmitter()
