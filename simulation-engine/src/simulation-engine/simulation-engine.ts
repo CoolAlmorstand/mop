@@ -56,18 +56,29 @@ export class SimulationEngine implements ISimulationEngine {
   }
 
   movePlayer(input: IMovementInput, playerId: string): void {
-    if(!this.players[playerId]) {
+
+    const player = this.players[playerId]
+
+    if(!player) {
       return
     }
-
-    this.players[playerId].x += input.x * this.players[playerId].speed * 0.1
-    this.players[playerId].y += input.y * this.players[playerId].speed * 0.1
-
 
     if(input.x != 0 && input.y != 0 ) {
       this.players[playerId].currentAction = "running"
     } else {
       this.players[playerId].currentAction = "idle"
+      return
     }
+
+    //validate movement
+    const totalMovement = Math.hypot(input.x, input.y) * input.scale * player.speed
+
+    if( totalMovement > player.speed ) {
+      //todo later
+    }
+
+    this.players[playerId].x += input.x * player.speed * input.scale
+    this.players[playerId].y += input.y * player.speed * input.scale
+
   }
 }
