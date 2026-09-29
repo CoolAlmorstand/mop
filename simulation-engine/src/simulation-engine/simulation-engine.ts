@@ -1,8 +1,8 @@
 
 
 import EventEmitter from "eventemitter3"
-import { ISimulationEngine } from "../interfaces"
-import { IEntity, IGameEvents, IPlayerEntity } from "../types"
+import type { ISimulationEngine } from "../interfaces"
+import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity } from "../types"
 
 
 export class SimulationEngine implements ISimulationEngine {
@@ -42,5 +42,9 @@ export class SimulationEngine implements ISimulationEngine {
 
   stop(): void {
       
+  }
+
+  movePlayer(input: IMovementInput, playerId: string): void {
+    
   }
 }

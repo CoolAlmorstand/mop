@@ -45,6 +45,18 @@ export type IDirectionVector = {
   y: number;
 }
 
+export type IIMpulse = {
+  x: number;
+  y: number;
+  scale: number;
+}
+
+
+export type IMovementInput = {
+  x: number,
+  y: number,
+}
+
 export type IGameTickData = {
   entities: IEntity[]
 }

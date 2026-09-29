@@ -1,6 +1,6 @@
 
 import type { EventEmitter } from "eventemitter3"
-import type { IGameEvents } from "./types"
+import type { IGameEvents, IMovementInput } from "./types.js"
 
 
 
@@ -11,4 +11,5 @@ export interface ISimulationEngine {
   stop(): void;
 
   spawnNewPlayer(playerId: string, username: string): void;
+  movePlayer(input: IMovementInput, playerId: string ): void;
 }

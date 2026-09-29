@@ -1,8 +1,7 @@
-import type { IMopControls } from "$lib/interfaces/controls";
 import type { IEntityRenderer } from "$lib/interfaces/entity-renderer";
-import type { IGame } from "$lib/interfaces/game";
 import type { IPixiMapRenderer } from "$lib/interfaces/map-renderer";
 import type { IMopRenderer } from "$lib/interfaces/renderer";
+import type { ISimulationEngine } from "@mop/simulation-engine";
 import type { Application, Container } from "pixi.js";
 
 export class PixiRenderer implements IMopRenderer {
@@ -12,13 +11,13 @@ export class PixiRenderer implements IMopRenderer {
   private displayContainers: Record<number, Container> = {};
   private mapRenderer: IPixiMapRenderer;
   private entityRenderer: IEntityRenderer;
-  private game: IGame
+  private simulation: ISimulationEngine; 
 
-  constructor(app: Application, mapRenderer: IPixiMapRenderer, entityRenderer: IEntityRenderer, game: IGame) {
+  constructor(app: Application, mapRenderer: IPixiMapRenderer, entityRenderer: IEntityRenderer, simulation: ISimulationEngine) {
     this.app = app
     this.mapRenderer = mapRenderer
     this.entityRenderer = entityRenderer
-    this.game = game
+    this.simulation = simulation
 
     this.mountContainer(0, this.mapRenderer.container) 
     this.mountContainer(1, this.entityRenderer.container)
@@ -30,11 +29,11 @@ export class PixiRenderer implements IMopRenderer {
 
 
   private setupGameListeners() {
-    this.game.event.on("entitiesMove", (entities) => {
+    this.simulation.event.on("entitiesMove", (entities) => {
       entities.forEach((entity) => this.entityRenderer.moveEntity(entity))
     })
 
-    this.game.event.on("createPlayer", (playerEntityId) => {
+    this.simulation.event.on("createPlayer", (playerEntityId) => {
       this.entityRenderer.createNewEntity("player", playerEntityId)
     })
   }
