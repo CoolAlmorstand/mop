@@ -7,6 +7,8 @@ import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity } from "../typ
 
 export class SimulationEngine implements ISimulationEngine {
   event: EventEmitter<IGameEvents> = new EventEmitter()
+  private ticksPerSecond = 20
+  private tickInterval?: ReturnType<typeof setInterval>
 
   // playerId, playerEntity
   private players: Record<string, IPlayerEntity> = {};
@@ -37,14 +39,29 @@ export class SimulationEngine implements ISimulationEngine {
   }
 
   start(): void {
-      
+    if (this.tickInterval) return
+
+    this.tickInterval = setInterval(() => {
+      this.event.emit("gameTick")
+    }, 1000 / this.ticksPerSecond)
   }
 
   stop(): void {
-      
+    if (!this.tickInterval) return
+
+    clearInterval(this.tickInterval)
+    this.tickInterval = undefined
   }
 
   movePlayer(input: IMovementInput, playerId: string): void {
-    
+    this.players[playerId].x += input.x
+    this.players[playerId].y += input.y
+
+
+    if(input.x != 0 && input.y != 0 ) {
+      this.players[playerId].currentAction = "running"
+    } else {
+      this.players[playerId].currentAction = "idle"
+    }
   }
 }
