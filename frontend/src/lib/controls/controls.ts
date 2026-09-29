@@ -21,7 +21,7 @@ export class Controls implements IMopControls {
   private screenHeight: number;
   
   private joystickPointerId: number | null = null
-  private joystickInputVector: IMovementInput = {x: 0, y: 0}
+  private joystickInputVector: IMovementInput = {x: 0, y: 0, scale: 0}
 
   private buttonDefinitions: Record<string, {
     x: number;
@@ -199,7 +199,8 @@ export class Controls implements IMopControls {
 
       this.joystickInputVector = {
         x: 0,
-        y: 0
+        y: 0,
+        scale: 0
       }
 
       return
@@ -214,12 +215,12 @@ export class Controls implements IMopControls {
     const radius = joystickDefinition.width / 2
 
     const hypotenuse = Math.hypot(x, y)
-    const scale = hypotenuse > radius ? radius / hypotenuse : 1
+    const knobPosOffset = hypotenuse > radius ? radius / hypotenuse : 1
     const throttle = Math.min(hypotenuse / radius, 1)
 
     const knobPosition = {
-      x: joystickKnobDefinition.x + ( x * scale ),
-      y: joystickKnobDefinition.y + ( y * scale )
+      x: joystickKnobDefinition.x + ( x * knobPosOffset ),
+      y: joystickKnobDefinition.y + ( y * knobPosOffset )
     }
 
     this.buttons["joystickKnob"].position.set(
@@ -228,8 +229,9 @@ export class Controls implements IMopControls {
     )
 
     this.joystickInputVector = {
-      x: ( x / hypotenuse ) * throttle,
-      y: ( y / hypotenuse ) * throttle
+      x: ( x / hypotenuse ),
+      y: ( y / hypotenuse ),
+      scale: throttle,
     }
   }
 
