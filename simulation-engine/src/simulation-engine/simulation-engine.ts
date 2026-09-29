@@ -3,6 +3,8 @@
 import EventEmitter from "eventemitter3"
 import type { ISimulationEngine } from "../interfaces"
 import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity } from "../types"
+import { ENTITIES_BASE_STATS } from "../index"
+import { getEntityDirectionFromMovementInput } from "./utils"
 
 
 export class SimulationEngine implements ISimulationEngine {
@@ -25,12 +27,15 @@ export class SimulationEngine implements ISimulationEngine {
       type: "player",
       username,
       inventory: [],
-      health: 20, 
-      speed: 20,
+      health: ENTITIES_BASE_STATS.player.health, 
+      speed: ENTITIES_BASE_STATS.player.speed,
       id: playerId,
-      attack: 20,
+      attack: ENTITIES_BASE_STATS.player.attack,
       direction: "s",
-      hitboxtSize: {width: 32, height: 48},
+      hitboxtSize: {
+        width: ENTITIES_BASE_STATS.player.hitboxWidth,
+        height: ENTITIES_BASE_STATS.player.hitboxHeight
+      }, 
       currentAction: "idle"
     }
 
@@ -56,18 +61,32 @@ export class SimulationEngine implements ISimulationEngine {
   }
 
   movePlayer(input: IMovementInput, playerId: string): void {
-    if(!this.players[playerId]) {
+
+    const player = this.players[playerId]
+
+    if(!player) {
       return
     }
-
-    this.players[playerId].x += input.x * this.players[playerId].speed * 0.1
-    this.players[playerId].y += input.y * this.players[playerId].speed * 0.1
-
 
     if(input.x != 0 && input.y != 0 ) {
       this.players[playerId].currentAction = "running"
     } else {
       this.players[playerId].currentAction = "idle"
+      return
     }
+
+    //validate movement
+    const totalMovement = Math.hypot(input.x, input.y) * input.scale * player.speed
+
+    if( totalMovement > player.speed ) {
+      //todo later
+    }
+
+    player.direction = getEntityDirectionFromMovementInput(input)
+
+    player.x += input.x * player.speed * input.scale
+    player.y += input.y * player.speed * input.scale
+
+
   }
 }
