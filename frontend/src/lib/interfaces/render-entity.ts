@@ -1,5 +1,5 @@
 
-import type { IEntityDirection } from "@mop/game-engine";
+import type { IEntityDirection } from "@mop/simulation-engine";
 import type { IEntitySpritesheets } from "$lib/types";
 import type { AnimatedSprite, Spritesheet } from "pixi.js";
 

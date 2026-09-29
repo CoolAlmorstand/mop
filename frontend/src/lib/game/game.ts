@@ -1,9 +1,9 @@
 
 
 import type { IGame } from "$lib/interfaces/game";
-import type { IDirectionVector, IEntity, IEntityDirection, IEntityType, IGameEvents } from "@mop/game-engine"
+import type { IDirectionVector, IEntity, IEntityDirection, IEntityType, IGameEvents } from "@mop/simulation-engine"
 
-import { ENTITIES_BASE_STATS } from "@mop/game-engine"
+import { ENTITIES_BASE_STATS } from "@mop/simulation-engine"
 import { randomString } from "$lib/utils/random-string";
 
 import EventEmmitter from "eventemitter3"

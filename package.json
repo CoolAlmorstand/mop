@@ -5,6 +5,6 @@
     "frontend",
     "backend",
     "shared-types",
-    "game-engine"
+    "simulation-engine"
   ]
 }

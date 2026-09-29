@@ -6,6 +6,6 @@
   "types": "./src/index.ts",
   "main": "./src/index.ts",
   "devDependencies": {
-    "@mop/game-engine": "0.0.1"
+    "@mop/simulation-engine": "0.0.1"
   }
 }

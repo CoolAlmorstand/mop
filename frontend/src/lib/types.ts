@@ -1,5 +1,5 @@
 import type { Texture } from "pixi.js";
-import type { ITilesId, IEntityType } from "@mop/game-engine"
+import type { ITilesId, IEntityType } from "@mop/simulation-engine"
 import type { Spritesheet } from "pixi.js";
 
 

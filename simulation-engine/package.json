@@ -1,5 +1,5 @@
 {
-  "name": "@mop/game-engine",
+  "name": "@mop/simulation-engine",
   "private": true,
   "version": "0.0.1",
   "type": "module",

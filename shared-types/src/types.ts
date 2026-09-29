@@ -1,4 +1,4 @@
-import type { IGameTickData } from "@mop/game-engine"
+import type { IGameTickData } from "@mop/simulation-engine"
 
 export type IGameSocketData = {
   userId: string;

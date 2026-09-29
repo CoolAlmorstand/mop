@@ -1,7 +1,7 @@
 
 
 import type { EventEmitter } from "eventemitter3"
-import type { IDirectionVector, IGameEvents } from "@mop/shared-types";
+import type { IDirectionVector, IGameEvents } from "@mop/simulation-engine";
 
 export interface IGame {
   event: EventEmitter<IGameEvents>;
