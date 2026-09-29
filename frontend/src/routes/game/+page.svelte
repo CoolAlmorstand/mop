@@ -22,8 +22,6 @@
     const gameSocket = new GameSocket(simulation)
     const gameClient = new GameClient(simulation, gameSocket)
 
-    await gameClient.initializeGame()
-
     const tilesTextureMap = await getTileTextureMap()
     const entitySpriteSheets = await loadEntitySpritesheets()
 
@@ -31,6 +29,8 @@
     const entityRenderer = new PixiEnitityRenderer(entitySpriteSheets)
 
     const renderer = new PixiRenderer(app, mapRenderer, entityRenderer, simulation)
+
+    await gameClient.initializeGame()
 
     const controls = new Controls(gameClient, simulation, renderer, app.screen.width, app.screen.height)
 

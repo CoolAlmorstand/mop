@@ -15,7 +15,6 @@ export class GameClient implements IGameClient {
   }
 
   movePlayer(input: IMovementInput): void {
-    console.log(input)
     if(this.playerId) {
       this.simulation.movePlayer(input, this.playerId) 
     }

@@ -13,7 +13,7 @@ type entityStats = {
 
 export const ENTITIES_BASE_STATS: Record<IEntityType, entityStats> = {
   player: {
-    speed: 2,
+    speed: 7,
     health: 20,
     attack: 5,
     hitboxWidth:32,
