@@ -15,7 +15,24 @@ export class GameClient implements IGameClient {
   }
 
   movePlayer(input: IMovementInput): void {
-    this.simulation.movePlayer(input, this.playerId) 
+    console.log(input)
+    if(this.playerId) {
+      this.simulation.movePlayer(input, this.playerId) 
+    }
+  }
+
+  async initializeGame(): Promise<void> {
+
+    //connect to server
+    //
+    //get from server from initial socket connection
+    const playerId = "12345" 
+    const username = "aoifeaj"
+
+    this.simulation.spawnNewPlayer(playerId, username)
+    this.simulation.start()
+    this.playerId = playerId
+
   }
 }
 
