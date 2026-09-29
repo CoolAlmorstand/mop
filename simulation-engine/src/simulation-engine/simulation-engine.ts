@@ -36,6 +36,7 @@ export class SimulationEngine implements ISimulationEngine {
 
     this.players[playerId] = playerEntity
     this.entities.push(playerEntity)
+    this.event.emit("createPlayer", playerId)
   }
 
   start(): void {
@@ -43,6 +44,7 @@ export class SimulationEngine implements ISimulationEngine {
 
     this.tickInterval = setInterval(() => {
       this.event.emit("gameTick")
+      this.event.emit("entitiesMove", this.entities)
     }, 1000 / this.ticksPerSecond)
   }
 
@@ -54,8 +56,12 @@ export class SimulationEngine implements ISimulationEngine {
   }
 
   movePlayer(input: IMovementInput, playerId: string): void {
-    this.players[playerId].x += input.x
-    this.players[playerId].y += input.y
+    if(!this.players[playerId]) {
+      return
+    }
+
+    this.players[playerId].x += input.x * this.players[playerId].speed * 0.1
+    this.players[playerId].y += input.y * this.players[playerId].speed * 0.1
 
 
     if(input.x != 0 && input.y != 0 ) {

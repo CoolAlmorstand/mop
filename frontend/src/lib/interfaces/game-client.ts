@@ -5,4 +5,5 @@ import type { EventEmitter } from "eventemitter3"
 
 export interface IGameClient {
   movePlayer(input: IMovementInput): void;
+  initializeGame(): Promise<void>;
 }

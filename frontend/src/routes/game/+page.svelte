@@ -22,6 +22,8 @@
     const gameSocket = new GameSocket(simulation)
     const gameClient = new GameClient(simulation, gameSocket)
 
+    await gameClient.initializeGame()
+
     const tilesTextureMap = await getTileTextureMap()
     const entitySpriteSheets = await loadEntitySpritesheets()
 
