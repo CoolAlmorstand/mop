@@ -1,8 +1,9 @@
 import type { IMopControls } from "$lib/interfaces/controls";
-import type { IGame } from "$lib/interfaces/game";
 import { Container, Sprite, Text, Texture, Rectangle, type ContainerChild, type FederatedPointerEvent } from "pixi.js";
 import type { IMopRenderer } from "$lib/interfaces/renderer";
-
+import type { ISimulationEngine } from "@mop/simulation-engine";
+import type { IGameClient } from "$lib/interfaces/game-client";
+import type { IMovementInput } from "@mop/simulation-engine";
 
 
 export class Controls implements IMopControls {
@@ -13,13 +14,14 @@ export class Controls implements IMopControls {
   //contains all the control sprites for visueal only
   private controlsContainer: Container = new Container();
 
-  private game: IGame;
+  private gameClient: IGameClient;
+  private simulation: ISimulationEngine;
   private renderer: IMopRenderer
   private screenWidth: number;
   private screenHeight: number;
   
   private joystickPointerId: number | null = null
-  private joystickInputVector: { x: number, y: number } = {x: 0, y: 0}
+  private joystickInputVector: IMovementInput = {x: 0, y: 0}
 
   private buttonDefinitions: Record<string, {
     x: number;
@@ -30,11 +32,12 @@ export class Controls implements IMopControls {
 
   private buttons: Record<string, ContainerChild> = {};
 
-  constructor(game: IGame, renderer: IMopRenderer, screenWidth: number, screenHeight: number) {
-    this.game = game;
-    this.screenWidth = screenWidth 
-    this.screenHeight = screenHeight
-    this.renderer = renderer
+  constructor(gameClient: IGameClient, simulation: ISimulationEngine, renderer: IMopRenderer, screenWidth: number, screenHeight: number) {
+    this.gameClient = gameClient;
+    this.screenWidth = screenWidth; 
+    this.screenHeight = screenHeight;
+    this.simulation = simulation;
+    this.renderer = renderer;
 
     this.setupButtonDefinitions()
     this.createActionButtons()
@@ -54,8 +57,8 @@ export class Controls implements IMopControls {
   }
 
   private setupListeners() {
-    this.game.event.on("gameTick", () => {
-      this.game.movePlayer(this.joystickInputVector)
+    this.simulation.event.on("gameTick", () => {
+      this.gameClient.movePlayer(this.joystickInputVector)
     })
   }
 

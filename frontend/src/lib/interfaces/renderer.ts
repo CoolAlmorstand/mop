@@ -7,3 +7,15 @@ export interface IMopRenderer {
   renderTest(): void;
   mountContainer(zIindex: number, container: Container): void;
 }
+
+
+
+
+
+
+
+
+
+
+
+

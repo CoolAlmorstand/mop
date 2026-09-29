@@ -1,4 +1,6 @@
 export * from "./types.js"
+export * from "./interfaces.js"
+export * from "./simulation-engine/simulation-engine.js"
 import type { IEntityType } from "./types.js"
 
 type entityStats = {
