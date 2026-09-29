@@ -4,6 +4,7 @@ import EventEmitter from "eventemitter3"
 import type { ISimulationEngine } from "../interfaces"
 import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity } from "../types"
 import { ENTITIES_BASE_STATS } from "../index"
+import { getEntityDirectionFromMovementInput } from "./utils"
 
 
 export class SimulationEngine implements ISimulationEngine {
@@ -81,8 +82,11 @@ export class SimulationEngine implements ISimulationEngine {
       //todo later
     }
 
-    this.players[playerId].x += input.x * player.speed * input.scale
-    this.players[playerId].y += input.y * player.speed * input.scale
+    player.direction = getEntityDirectionFromMovementInput(input)
+
+    player.x += input.x * player.speed * input.scale
+    player.y += input.y * player.speed * input.scale
+
 
   }
 }
