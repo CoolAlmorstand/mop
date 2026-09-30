@@ -10,6 +10,7 @@ export interface IGamesManager {
   //            gameId
   games: Record<string, ISimulationEngine>
 
-  startGame(gameId: string): void;
-  terminateGame(gameId: string): void;
+  startGame(gameId: string): Promise<void>;
+  terminateGame(gameId: string): Promise<void>;
+  joinGame(playerId: string, username: string, gameId: string): Promise<void>;
 }

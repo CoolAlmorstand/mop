@@ -1,10 +1,10 @@
 
 
-import EventEmitter from "eventemitter3"
-import type { ISimulationEngine } from "../interfaces"
-import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity } from "../types"
-import { ENTITIES_BASE_STATS } from "../index"
-import { getEntityDirectionFromMovementInput } from "./utils"
+import { EventEmitter } from "eventemitter3"
+import type { ISimulationEngine } from "../interfaces.js"
+import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity } from "../types.js"
+import { ENTITIES_BASE_STATS } from "../index.js"
+import { getEntityDirectionFromMovementInput } from "./utils.js"
 
 
 export class SimulationEngine implements ISimulationEngine {
@@ -48,7 +48,7 @@ export class SimulationEngine implements ISimulationEngine {
     if (this.tickInterval) return
 
     this.tickInterval = setInterval(() => {
-      this.event.emit("gameTick")
+      this.event.emit("gameTick", {entities: this.entities })
       this.event.emit("entitiesMove", this.entities)
     }, 1000 / this.ticksPerSecond)
   }
