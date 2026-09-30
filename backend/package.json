@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev": "node dist/server.js"
+    "dev": "tsx watch --tsconfig ./tsconfig.json src/server.ts"
   },
   "devDependencies": {
     "@mop/simulation-engine": "0.0.1",

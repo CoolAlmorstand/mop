@@ -65,6 +65,8 @@ export class GameSocket {
           socket.data.currentGame = data.gameId
 
           this.setupGameListeners(socket)
+          console.log(socket.data)
+          ack({ playerId: socket.data.userId, username: socket.data.username})
         } catch (error) {
           console.error(error)
         }

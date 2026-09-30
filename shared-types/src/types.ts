@@ -8,7 +8,7 @@ export type IGameSocketData = {
 
 export interface IGameSocketClientToServer {
   "playerMove": (data: {x: number, y: number}) => void;
-  "joinGame": (data: {gameId: string }, ack: (playrId: string) => void) => void;
+  "joinGame": (data: {gameId: string }, ack: (data: { playerId: string, username: string}) => void) => void;
 }
 
 
