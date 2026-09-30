@@ -8,7 +8,7 @@ export interface IGameEvents {
 
   //returns entityId player entity
   createPlayer: (entityId: string) => void;
-  gameTick: () => void;
+  gameTick: (data: IGameTickData) => void;
 
 }
 

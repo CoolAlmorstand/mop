@@ -1,6 +1,6 @@
 
 
-import type { IMovementInput, IEntityDirection } from "../types";
+import type { IMovementInput, IEntityDirection } from "../types.ts";
 
 
 

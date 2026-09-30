@@ -1,10 +1,41 @@
 
 
-import EventEmitter from "eventemitter3"
-import type { ISimulationEngine } from "../interfaces"
-import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity } from "../types"
-import { ENTITIES_BASE_STATS } from "../index"
-import { getEntityDirectionFromMovementInput } from "./utils"
+import { EventEmitter } from "eventemitter3"
+import type { ISimulationEngine } from "../interfaces.ts"
+import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity, IEntityType } from "../types.ts"
+import { getEntityDirectionFromMovementInput } from "./utils.ts"
+
+type entityStats = {
+  speed: number,
+  health: number,
+  attack: number,
+  hitboxWidth:number,
+  hitboxHeight: number
+}
+
+export const ENTITIES_BASE_STATS: Record<IEntityType, entityStats> = {
+  player: {
+    speed: 5,
+    health: 20,
+    attack: 5,
+    hitboxWidth:32,
+    hitboxHeight: 48
+  },
+  sheep: {
+    speed: 2,
+    health: 20,
+    attack: 5,
+    hitboxWidth:32,
+    hitboxHeight: 48
+  },
+  cat: {
+    speed: 2,
+    health: 20,
+    attack: 5,
+    hitboxWidth:32,
+    hitboxHeight: 48
+  }
+}
 
 
 export class SimulationEngine implements ISimulationEngine {
@@ -48,7 +79,7 @@ export class SimulationEngine implements ISimulationEngine {
     if (this.tickInterval) return
 
     this.tickInterval = setInterval(() => {
-      this.event.emit("gameTick")
+      this.event.emit("gameTick", {entities: this.entities })
       this.event.emit("entitiesMove", this.entities)
     }, 1000 / this.ticksPerSecond)
   }
