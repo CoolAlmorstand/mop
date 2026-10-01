@@ -2,7 +2,7 @@ import type { IRenderEntity } from "$lib/interfaces/render-entity";
 import type { IEntityDirection } from "@mop/simulation-engine";
 import type { IEntitySpritesheets, IEntitySpritesheet } from "$lib/types";
 
-import { AnimatedSprite, Spritesheet } from "pixi.js";
+import { AnimatedSprite, Container, Spritesheet, Text } from "pixi.js";
 
 export class RenderEntity implements IRenderEntity {
   private currentSpriteSheet: IEntitySpritesheet;
@@ -10,6 +10,7 @@ export class RenderEntity implements IRenderEntity {
   spriteSheetsMap: IEntitySpritesheets;
   currentAnimation: string;
   animatedSprite: AnimatedSprite;
+  container: Container = new Container(); 
   entityType: string;
   direction: IEntityDirection = "s";
   id: string;
@@ -28,7 +29,25 @@ export class RenderEntity implements IRenderEntity {
     this.currentAnimation = defaultAnimation
 
     this.animatedSprite = new AnimatedSprite(defaultSpriteSheet.spritesheet.animations[defaultAnimation])
+    this.container.addChild(this.animatedSprite)
 
+  }
+
+  addName(name: string): void {
+    const text = new Text({
+      text: name,
+      style: {
+        fill: "white",
+        fontSize: 14
+      }
+    })
+
+    text.x = - ( text.width / 2 ) + ( this.animatedSprite.width / 2) 
+    text.y = -10
+    const yOffset = this.animatedSprite.height
+    
+
+    this.container.addChild(text)
   }
 
   playAnimation(name: string, speed: number, loop: boolean): void {

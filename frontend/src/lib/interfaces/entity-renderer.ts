@@ -7,6 +7,6 @@ export interface IEntityRenderer {
   container: Container;
   
   test(entity: IRenderEntity): void;
-  createNewEntity(entityType: IEntityType, entityId: string): void;
+  createNewEntity(entityType: IEntityType, entityId: string, name: string | null | undefined): void;
   moveEntity(entity: IEntity): void;
 }

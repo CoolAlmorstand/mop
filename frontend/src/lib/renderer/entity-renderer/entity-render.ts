@@ -25,12 +25,16 @@ export class PixiEnitityRenderer implements IEntityRenderer {
     entity.playAnimation("run_nw", 0.15, true)
   }
 
-  createNewEntity(entityType: IEntityType, entityId: string): void {
+  createNewEntity(entityType: IEntityType, entityId: string, name: string | null | undefined): void {
     const spritesheet = this.entitySpritesheets[entityType]
     const entity = new RenderEntity(spritesheet, entityId, entityType)
 
     this.entities[entityId] = entity 
-    this.container.addChild(entity.animatedSprite)
+    this.container.addChild(entity.container)
+
+    if(name) {
+      this.entities[entityId].addName(name) 
+    }
   }
 
   moveEntity(entity: IEntity): void {
@@ -39,7 +43,7 @@ export class PixiEnitityRenderer implements IEntityRenderer {
       return
     }
 
-    renderEntity.animatedSprite.position.set(entity.x, entity.y)
+    renderEntity.container.position.set(entity.x, entity.y)
     renderEntity.direction = entity.direction
 
     if (entity.currentAction === "running") {
