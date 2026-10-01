@@ -34,7 +34,8 @@ export class PixiRenderer implements IMopRenderer {
     })
 
     this.simulation.event.on("createPlayer", (playerEntityId) => {
-      this.entityRenderer.createNewEntity("player", playerEntityId)
+      const username = this.simulation.getEntity(playerEntityId)?.name
+      this.entityRenderer.createNewEntity("player", playerEntityId, username)
     })
   }
 

@@ -32,7 +32,6 @@ export class GameClient implements IGameClient {
     this.simulation.spawnNewPlayer(playerId, username)
     this.simulation.start()
     this.playerId = playerId
-
   }
 }
 

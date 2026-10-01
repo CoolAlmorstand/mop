@@ -22,6 +22,7 @@ export type IEntity = {
   id: string;
   type: IEntityType;
   direction: IEntityDirection;
+  name: string | null;
   currentAction: IEntityAction;
 }
 
@@ -36,7 +37,6 @@ export type IItem = {
 }
 
 export type IPlayerEntity = IEntity & {
-  username: string;
   inventory: IItem[];
 }
 

@@ -45,7 +45,9 @@ export class SimulationEngine implements ISimulationEngine {
 
   // playerId, playerEntity
   private players: Record<string, IPlayerEntity> = {};
-  private entities: IEntity[] = []
+  private entitiesArray: IEntity[] = []
+  //                      entity id
+  private entities: Record<string, IEntity> = {}
 
   constructor() {
 
@@ -56,7 +58,7 @@ export class SimulationEngine implements ISimulationEngine {
       x: 20,
       y: 20,
       type: "player",
-      username,
+      name: username,
       inventory: [],
       health: ENTITIES_BASE_STATS.player.health, 
       speed: ENTITIES_BASE_STATS.player.speed,
@@ -71,16 +73,21 @@ export class SimulationEngine implements ISimulationEngine {
     }
 
     this.players[playerId] = playerEntity
-    this.entities.push(playerEntity)
+    this.entitiesArray.push(playerEntity)
+    this.entities[playerId] = playerEntity 
     this.event.emit("createPlayer", playerId)
+  }
+
+  getEntity(entityId: string): IEntity | undefined {
+    return this.entities[entityId]
   }
 
   start(): void {
     if (this.tickInterval) return
 
     this.tickInterval = setInterval(() => {
-      this.event.emit("gameTick", {entities: this.entities })
-      this.event.emit("entitiesMove", this.entities)
+      this.event.emit("gameTick", {entities: this.entitiesArray })
+      this.event.emit("entitiesMove", this.entitiesArray)
     }, 1000 / this.ticksPerSecond)
   }
 
