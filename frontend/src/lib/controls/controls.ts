@@ -19,6 +19,9 @@ export class Controls implements IMopControls {
   private renderer: IMopRenderer
   private screenWidth: number;
   private screenHeight: number;
+
+  //                                  key id
+  private keyboardKeysPressed: Record<string, boolean> = {};
   
   private joystickPointerId: number | null = null
   private joystickInputVector: IMovementInput = {x: 0, y: 0, scale: 0}
@@ -52,13 +55,59 @@ export class Controls implements IMopControls {
 
     this.renderer.mountContainer(3, this.container)
 
-
-    this.setupListeners()
+    this.setupKeyboardlisteners()
+    this.setupGameListeners()
   }
 
-  private setupListeners() {
+  private setupKeyboardlisteners() {
+    window.addEventListener("keydown", (event) => {
+      this.keyboardKeysPressed[event.key] = true
+    })
+
+    window.addEventListener("keyup", (event) => {
+      this.keyboardKeysPressed[event.key] = false
+    })
+  }
+
+  private getMovementFromKeyboard(): IMovementInput {
+    let x = 0
+    let y = 0
+
+    if(this.keyboardKeysPressed["d"]) {
+      x = 1
+    } 
+    else if(this.keyboardKeysPressed["a"]) {
+      x = -1
+    }
+
+    if(this.keyboardKeysPressed["w"]) {
+      y = -1
+    } 
+    else if( this.keyboardKeysPressed["s"]) {
+      y = 1
+    }
+
+    if(x == 0 && y == 0) {
+      return {
+        x,
+        y,
+        scale: 0,
+      }
+    } 
+
+    const hypotenuse = Math.hypot(x, y) 
+
+    return {
+      x: x / hypotenuse,
+      y: y / hypotenuse,
+      scale: 1
+    }
+  }
+
+  private setupGameListeners() {
     this.simulation.event.on("gameTick", () => {
       this.gameClient.movePlayer(this.joystickInputVector)
+      this.gameClient.movePlayer(this.getMovementFromKeyboard())
     })
   }
 
