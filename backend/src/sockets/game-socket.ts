@@ -9,11 +9,6 @@ import type { IGamesManager } from "../interfaces/games-manager.js"
 
 //temporary
 
-
-interface IGame {
-  event: EventEmitter;
-}
-
 type IAuth = {}
 
 type IGameSocket = Socket<IGameSocketClientToServer, IGameSocketServerToClient> 
@@ -23,6 +18,7 @@ export class GameSocket {
   private io: Namespace<IGameSocketClientToServer, IGameSocketServerToClient, {}, IGameSocketData>;
 
   private gameManager: IGamesManager;
+  private connectedPlayersCount: number = 0;
   private auth: IAuth;
 
   constructor(mainIoServer: Server, gameManager: IGamesManager, auth: IAuth ) {
@@ -56,8 +52,17 @@ export class GameSocket {
 
       //use auth later to get userId
       //userId is used as the playerId
-      socket.data.userId = "1"
-      socket.data.username = "timothy_dexter"
+
+      this.connectedPlayersCount += 1
+
+      if(this.connectedPlayersCount == 1) {
+        socket.data.userId = "1"
+        socket.data.username = "timothy_dexter"
+      } else {
+        socket.data.userId = "2"
+        socket.data.username = "napoleon"
+      }
+      
 
       socket.on("joinGame", (data, ack) => {
         try {
