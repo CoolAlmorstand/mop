@@ -90,7 +90,8 @@ export class SimulationEngine implements ISimulationEngine {
   }
 
   updateGameStateFromTick(gameTickData: IGameTickData): void {
-
+    this.entities = gameTickData.entities
+    this.entitiesArray = Object.values(gameTickData.entities)
   }
 
   getEntity(entityId: string): IEntity | undefined {
