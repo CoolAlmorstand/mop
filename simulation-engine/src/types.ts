@@ -59,5 +59,5 @@ export type IMovementInput = {
 }
 
 export type IGameTickData = {
-  entities: IEntity[]
+  entities: Record<string, IEntity>
 }

@@ -101,7 +101,7 @@ export class SimulationEngine implements ISimulationEngine {
     if (this.tickInterval) return
 
     this.tickInterval = setInterval(() => {
-      this.event.emit("gameTick", {entities: this.entitiesArray })
+      this.event.emit("gameTick", {entities: this.entities })
       this.event.emit("entitiesMove", this.entitiesArray)
     }, 1000 / this.ticksPerSecond)
   }
