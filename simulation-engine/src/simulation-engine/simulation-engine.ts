@@ -2,7 +2,7 @@
 
 import { EventEmitter } from "eventemitter3"
 import type { ISimulationEngine } from "../interfaces.ts"
-import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity, IEntityType } from "../types.ts"
+import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity, IEntityType, IGameTickData } from "../types.ts"
 import { getEntityDirectionFromMovementInput } from "./utils.ts"
 
 type entityStats = {
@@ -78,6 +78,21 @@ export class SimulationEngine implements ISimulationEngine {
     this.event.emit("createPlayer", playerId)
   }
 
+  updateEntity(entityId: string, entityState: Partial<IEntity>): void {
+    const entity = this.entities[entityId]
+
+    if(!entity) {
+      throw new Error(`failed to update entity: ${entityId} entity does not exist`)
+    }
+
+    //todo later
+    //update entity
+  }
+
+  updateGameStateFromTick(gameTickData: IGameTickData): void {
+
+  }
+
   getEntity(entityId: string): IEntity | undefined {
     return this.entities[entityId]
   }
@@ -124,7 +139,5 @@ export class SimulationEngine implements ISimulationEngine {
 
     player.x += input.x * player.speed * input.scale
     player.y += input.y * player.speed * input.scale
-
-
   }
 }
