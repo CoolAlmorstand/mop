@@ -25,8 +25,9 @@ export class GameClient implements IGameClient {
     //connect to server
     //
     //get from server from initial socket connection
-    const { playerId, username } = await this.gameSocket.joinGame("20")
-    
+    // const { playerId, username } = await this.gameSocket.joinGame("20")
+    const { playerId, username } = {playerId: "timothy", username: "thimothy"}
+
     console.log(playerId, username)
 
     this.simulation.spawnNewPlayer(playerId, username)

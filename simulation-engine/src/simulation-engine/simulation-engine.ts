@@ -106,7 +106,7 @@ export class SimulationEngine implements ISimulationEngine {
       return
     }
 
-    if(input.x != 0 && input.y != 0 ) {
+    if(input.x != 0 || input.y != 0 ) {
       this.players[playerId].currentAction = "running"
     } else {
       this.players[playerId].currentAction = "idle"
