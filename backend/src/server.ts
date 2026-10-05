@@ -14,7 +14,10 @@ if (!clientUrl) {
 }
 
 const app = express();
-app.use(cors({ origin: clientUrl }));
+app.use(cors({ origin: [
+  clientUrl,
+  "localhost:5173"
+]}));
 
 const httpServer = createServer(app);
 
