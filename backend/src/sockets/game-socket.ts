@@ -11,9 +11,9 @@ import type { IGamesManager } from "../interfaces/games-manager.js"
 
 type IAuth = {}
 
-type IGameSocket = Socket<IGameSocketClientToServer, IGameSocketServerToClient> 
+type IGameSocketIo = Socket<IGameSocketClientToServer, IGameSocketServerToClient> 
 
-export class GameSocket {
+export class GameSocket  {
 
   private io: Namespace<IGameSocketClientToServer, IGameSocketServerToClient, {}, IGameSocketData>;
 
@@ -30,7 +30,7 @@ export class GameSocket {
   }
 
 
-  private setupGameListeners(socket: IGameSocket) {
+  private setupGameListeners(socket: IGameSocketIo) {
     if(!socket.data.currentGame) {
       throw new Error("socket does not have a current game its connected to")
     }
@@ -55,7 +55,7 @@ export class GameSocket {
 
       this.connectedPlayersCount += 1
 
-      if(this.connectedPlayersCount == 1) {
+      if(this.connectedPlayersCount % 2 == 0) {
         socket.data.userId = "1"
         socket.data.username = "timothy_dexter"
       } else {
@@ -64,22 +64,23 @@ export class GameSocket {
       }
       
 
-      socket.on("joinGame", (data, ack) => {
+      socket.on("joinGame", async (data, ack) => {
         try {
-          this.gameManager.joinGame(socket.data.userId, socket.data.username, data.gameId)
+          await this.gameManager.joinGame(socket.data.userId, socket.data.username, data.gameId)
+
           socket.data.currentGame = data.gameId
 
           this.setupGameListeners(socket)
           console.log(socket.data)
+
+          socket.on("playerMove", (movementInput) => {
+            this.gameManager.games[data.gameId].movePlayer(movementInput, socket.data.userId)
+          })
+
           ack({ playerId: socket.data.userId, username: socket.data.username})
         } catch (error) {
           console.error(error)
         }
-      })
-
-
-      socket.on("playerMove", (data) => {
-        console.log("playerMove", data.x, data.y)
       })
     })
   }

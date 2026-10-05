@@ -59,5 +59,6 @@ export type IMovementInput = {
 }
 
 export type IGameTickData = {
-  entities: Record<string, IEntity>
+  entities: Record<string, IEntity>;
+  entitiesArray: IEntity[];
 }

@@ -3,7 +3,6 @@ import { createServer } from 'node:http';
 import cors from 'cors';
 import express from 'express';
 import { initializeSocket } from './sockets/initialize-socket.js';
-import { EventEmitter } from 'eventemitter3';
 import { GameSocket } from './sockets/game-socket.js';
 import { GamesManager } from './games-manager/games-manager.js';
 

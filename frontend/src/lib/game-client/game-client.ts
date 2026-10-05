@@ -17,6 +17,7 @@ export class GameClient implements IGameClient {
   movePlayer(input: IMovementInput): void {
     if(this.playerId) {
       this.simulation.movePlayer(input, this.playerId) 
+      this.gameSocket.movePlayer(input)
     }
   }
 
@@ -25,8 +26,7 @@ export class GameClient implements IGameClient {
     //connect to server
     //
     //get from server from initial socket connection
-    // const { playerId, username } = await this.gameSocket.joinGame("20")
-    const { playerId, username } = {playerId: "timothy", username: "thimothy"}
+    const { playerId, username } = await this.gameSocket.joinGame("20")
 
     console.log(playerId, username)
 

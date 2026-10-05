@@ -29,8 +29,8 @@ export class PixiRenderer implements IMopRenderer {
 
 
   private setupGameListeners() {
-    this.simulation.event.on("entitiesMove", (entities) => {
-      entities.forEach((entity) => this.entityRenderer.moveEntity(entity))
+    this.simulation.event.on("gameTick", (gameTickData) => {
+      gameTickData.entitiesArray.forEach((entity) => this.entityRenderer.moveEntity(entity))
     })
 
     this.simulation.event.on("createPlayer", (playerEntityId) => {

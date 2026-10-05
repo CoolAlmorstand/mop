@@ -40,7 +40,9 @@ export class PixiEnitityRenderer implements IEntityRenderer {
   moveEntity(entity: IEntity): void {
     const renderEntity = this.entities[entity.id]
     if (!renderEntity) {
-      return
+      //temporaty for test
+      this.createNewEntity(entity.type, entity.id, entity.name)
+      //return
     }
 
     renderEntity.container.position.set(entity.x, entity.y)
