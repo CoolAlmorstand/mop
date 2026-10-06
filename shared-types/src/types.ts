@@ -1,4 +1,5 @@
 import type { IGameTickData } from "@mop/simulation-engine"
+import type  { IMovementInput } from "@mop/simulation-engine"
 
 export type IGameSocketData = {
   userId: string;
@@ -7,7 +8,7 @@ export type IGameSocketData = {
 }
 
 export interface IGameSocketClientToServer {
-  "playerMove": (data: {x: number, y: number}) => void;
+  "playerMove": (movementInput: IMovementInput) => void;
   "joinGame": (data: {gameId: string }, ack: (data: { playerId: string, username: string}) => void) => void;
 }
 

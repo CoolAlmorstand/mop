@@ -107,7 +107,6 @@ export class Controls implements IMopControls {
   private setupGameListeners() {
     this.simulation.event.on("gameTick", () => {
       this.gameClient.movePlayer(this.joystickInputVector)
-      this.gameClient.movePlayer(this.getMovementFromKeyboard())
     })
   }
 

@@ -9,20 +9,16 @@ import type { IGamesManager } from "../interfaces/games-manager.js"
 
 //temporary
 
-
-interface IGame {
-  event: EventEmitter;
-}
-
 type IAuth = {}
 
-type IGameSocket = Socket<IGameSocketClientToServer, IGameSocketServerToClient> 
+type IGameSocketIo = Socket<IGameSocketClientToServer, IGameSocketServerToClient> 
 
-export class GameSocket {
+export class GameSocket  {
 
   private io: Namespace<IGameSocketClientToServer, IGameSocketServerToClient, {}, IGameSocketData>;
 
   private gameManager: IGamesManager;
+  private connectedPlayersCount: number = 0;
   private auth: IAuth;
 
   constructor(mainIoServer: Server, gameManager: IGamesManager, auth: IAuth ) {
@@ -34,7 +30,7 @@ export class GameSocket {
   }
 
 
-  private setupGameListeners(socket: IGameSocket) {
+  private setupGameListeners(socket: IGameSocketIo) {
     if(!socket.data.currentGame) {
       throw new Error("socket does not have a current game its connected to")
     }
@@ -56,25 +52,35 @@ export class GameSocket {
 
       //use auth later to get userId
       //userId is used as the playerId
-      socket.data.userId = "1"
-      socket.data.username = "timothy_dexter"
 
-      socket.on("joinGame", (data, ack) => {
+      this.connectedPlayersCount += 1
+
+      if(this.connectedPlayersCount % 2 == 0) {
+        socket.data.userId = "1"
+        socket.data.username = "timothy_dexter"
+      } else {
+        socket.data.userId = "2"
+        socket.data.username = "napoleon"
+      }
+      
+
+      socket.on("joinGame", async (data, ack) => {
         try {
-          this.gameManager.joinGame(socket.data.userId, socket.data.username, data.gameId)
+          await this.gameManager.joinGame(socket.data.userId, socket.data.username, data.gameId)
+
           socket.data.currentGame = data.gameId
 
           this.setupGameListeners(socket)
           console.log(socket.data)
+
+          socket.on("playerMove", (movementInput) => {
+            this.gameManager.games[data.gameId].movePlayer(movementInput, socket.data.userId)
+          })
+
           ack({ playerId: socket.data.userId, username: socket.data.username})
         } catch (error) {
           console.error(error)
         }
-      })
-
-
-      socket.on("playerMove", (data) => {
-        console.log("playerMove", data.x, data.y)
       })
     })
   }

@@ -2,7 +2,7 @@
 
 import { EventEmitter } from "eventemitter3"
 import type { ISimulationEngine } from "../interfaces.ts"
-import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity, IEntityType } from "../types.ts"
+import type { IEntity, IGameEvents, IMovementInput, IPlayerEntity, IEntityType, IGameTickData } from "../types.ts"
 import { getEntityDirectionFromMovementInput } from "./utils.ts"
 
 type entityStats = {
@@ -78,6 +78,22 @@ export class SimulationEngine implements ISimulationEngine {
     this.event.emit("createPlayer", playerId)
   }
 
+  updateEntity(entityId: string, entityState: Partial<IEntity>): void {
+    const entity = this.entities[entityId]
+
+    if(!entity) {
+      throw new Error(`failed to update entity: ${entityId} entity does not exist`)
+    }
+
+    //todo later
+    //update entity
+  }
+
+  updateGameStateFromTick(gameTickData: IGameTickData): void {
+    this.entities = gameTickData.entities
+    this.entitiesArray = Object.values(gameTickData.entities)
+  }
+
   getEntity(entityId: string): IEntity | undefined {
     return this.entities[entityId]
   }
@@ -86,7 +102,11 @@ export class SimulationEngine implements ISimulationEngine {
     if (this.tickInterval) return
 
     this.tickInterval = setInterval(() => {
-      this.event.emit("gameTick", {entities: this.entitiesArray })
+      this.event.emit("gameTick", {
+        entities: this.entities ,
+        entitiesArray: this.entitiesArray
+      })
+
       this.event.emit("entitiesMove", this.entitiesArray)
     }, 1000 / this.ticksPerSecond)
   }
@@ -124,7 +144,5 @@ export class SimulationEngine implements ISimulationEngine {
 
     player.x += input.x * player.speed * input.scale
     player.y += input.y * player.speed * input.scale
-
-
   }
 }

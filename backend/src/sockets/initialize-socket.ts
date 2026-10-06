@@ -7,7 +7,7 @@ import { Server } from 'socket.io';
 export function initializeSocket(httpServer: HttpServer, clientUrl: string): Server {
 	return new Server(httpServer, {
 		cors: {
-			origin: clientUrl,
+			origin: [clientUrl, "localhost:5173"]
 		},
 	});
 }
