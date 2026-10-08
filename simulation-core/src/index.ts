@@ -5,9 +5,6 @@ export * from "./types.ts"
 
 
 
-
-
-
 type entityStats = {
   speed: number,
   health: number,
@@ -41,6 +38,8 @@ export const ENTITIES_BASE_STATS: Record<IEntityType, entityStats> = {
 }
 
 
+export function movePlayer() {
 
+}
 
 

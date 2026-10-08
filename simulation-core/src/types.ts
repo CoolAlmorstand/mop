@@ -58,7 +58,50 @@ export type IMovementInput = {
   scale: number;
 }
 
+export type IGameTickEvents = {
+  eventType: "playerSpawn"
+  username: string;
+  entityId: string;
+  x: number;
+  y: number;
+} | {
+  eventType: "entitySpawn";
+  entityType: IEntityType;
+  name?: string;
+  entityId: string;
+  x: number;
+  y: number;
+
+} | {
+  eventType: "entityDie";
+  entityType: IEntityType;
+  entityId: string;
+  x: number;
+  y: number;
+} | {
+  eventType: "entityMove";
+  entityType: string;
+  entityId: string;
+  prevX: number;
+  prevY: number;
+  targetX: number;
+  targetY: number;
+}
+
+
+export type IGameState = {
+  
+}
+
 export type IGameTickData = {
   entities: Record<string, IEntity>;
   entitiesArray: IEntity[];
+  gameTickEvents: IGameTickEvents[];
 }
+
+
+
+
+
+
+
