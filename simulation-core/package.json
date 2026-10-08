@@ -1,0 +1,11 @@
+{
+  "name": "@mop/simulation-core",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "types": "./src/types.ts",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "eventemitter3": "^5.0.4"
+  }
+}
