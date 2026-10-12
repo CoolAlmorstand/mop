@@ -17,9 +17,7 @@ export class GameClient implements IGameClient {
   }
 
   movePlayer(input: IMovementInput): void {
-    if(this.playerId) {
-      this.event.emit("playerMove", input)
-    }
+    
   }
 
   start(): void {
@@ -61,11 +59,12 @@ export class GameClient implements IGameClient {
   }
 
   async initializeGame(): Promise<void> {
-
-    const { playerId } = await new Promise<{ playerId: string; username: string }>((resolve, reject) => {
-      this.event.emit("joinGame", "20", resolve, reject)
-    })
+    
+    const playerId = "1"
+    const username = "timothy"
+    
     this.playerId = playerId
+    this.simulation.spawnPlayer(username, playerId, 20, 20)
     this.start()
   }
 }
