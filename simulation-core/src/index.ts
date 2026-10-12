@@ -81,6 +81,14 @@ export class SimulationCore implements ISumaltionCore {
     return { targetX, targetY, collisions }
   }
 
+  moveEntity(entityId: string, x: number, y: number): void {
+    this.entities[entityId].x = x
+    this.entities[entityId].y = y
+
+    this.collisionBodies[entityId].x = x
+    this.collisionBodies[entityId].y = y
+  }
+
   spawnPlayer(name: string, playerId: string, x: number, y: number) {
     const player: IEntity = {
       type: "player",
@@ -101,5 +109,13 @@ export class SimulationCore implements ISumaltionCore {
 
     this.entities[playerId] = player
     this.entitiesArray.push(player)
+
+    const box = this.collisionContainer.createBox(
+      {x, y},
+      player.hitboxtSize.width,
+      player.hitboxtSize.height
+    )
+
+    this.collisionBodies[playerId] = box
   } 
 }
