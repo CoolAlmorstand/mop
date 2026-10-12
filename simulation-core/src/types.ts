@@ -27,6 +27,7 @@ export interface ISumaltionCore {
   collisionBodies: Record<string, Box>;
 
   tryMovePlayer(playerId: string, movementInput: IMovementInput): { targetX: number; targetY: number, collisions: ICollision[]};
+  spawnPlayer(name: string, playerId: string, x: number, y: number): void;
 }
 
 export type IEntity = {
@@ -127,7 +128,6 @@ export type IGameTickData = {
   entitiesArray: IEntity[];
   gameTickEvents: IGameTickEvents[];
 }
-
 
 
 

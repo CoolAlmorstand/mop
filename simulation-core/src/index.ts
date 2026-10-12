@@ -80,4 +80,26 @@ export class SimulationCore implements ISumaltionCore {
 
     return { targetX, targetY, collisions }
   }
+
+  spawnPlayer(name: string, playerId: string, x: number, y: number) {
+    const player: IEntity = {
+      type: "player",
+      x: x ? x : 20,
+      y: y ? y : 20,
+      hitboxtSize: {
+        width: ENTITIES_BASE_STATS.player.hitboxWidth,
+        height: ENTITIES_BASE_STATS.player.hitboxHeight
+      },
+      health: ENTITIES_BASE_STATS.player.health,
+      speed: ENTITIES_BASE_STATS.player.speed,
+      id: playerId,
+      attack: ENTITIES_BASE_STATS.player.attack,
+      currentAction: "idle",
+      direction: "s",
+      name
+    }
+
+    this.entities[playerId] = player
+    this.entitiesArray.push(player)
+  } 
 }
