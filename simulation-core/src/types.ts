@@ -27,6 +27,8 @@ export interface ISumaltionCore {
   collisionBodies: Record<string, Box>;
 
   tryMovePlayer(playerId: string, movementInput: IMovementInput): { targetX: number; targetY: number, collisions: ICollision[]};
+  moveEntity(entityId: string, x: number, y: number): void;
+  updateEntityCurrentAction(entityId: string, enitityType: string, newAction: IEntityAction): void;
   spawnPlayer(name: string, playerId: string, x: number, y: number): void;
 }
 

@@ -1,6 +1,6 @@
 
 
-import type { IEntityType, IGameState, IMovementInput, IEntity, ISumaltionCore, ICollision } from "./types.ts"
+import type { IEntityType, IGameState, IMovementInput, IEntity, ISumaltionCore, ICollision, IEntityAction } from "./types.ts"
 import { Box, System } from "check2d"
 export * from "./types.ts"
 
@@ -87,6 +87,10 @@ export class SimulationCore implements ISumaltionCore {
 
     this.collisionBodies[entityId].x = x
     this.collisionBodies[entityId].y = y
+  }
+
+  updateEntityCurrentAction(entityId: string, enitityType: string, newAction: IEntityAction): void {
+    this.entities[entityId].currentAction = newAction
   }
 
   spawnPlayer(name: string, playerId: string, x: number, y: number) {
