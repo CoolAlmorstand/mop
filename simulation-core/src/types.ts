@@ -2,6 +2,7 @@ export type ITilesId = "grass" | "sand"
 export type IEntityType = "player" | "sheep" | "cat"
 export type IEntityDirection = "n" | "ne" | "e" | "se" | "s" | "sw" | "w" | "nw"
 export type IEntityAction = "running" | "idle"
+import type { Box, System } from "check2d"
 
 export interface IGameEvents {
   entitiesMove: (entities: IEntity[]) => void;
@@ -10,6 +11,22 @@ export interface IGameEvents {
   createPlayer: (entityId: string) => void;
   gameTick: (data: IGameTickData) => void;
 
+}
+
+
+export type ICollision = {
+  pushOutVector: {x: number, y: number, scale: number};
+  //id of the entity you colided with
+  collidedWithId: string;
+}
+
+export interface ISumaltionCore {
+  entities: Record<string, IEntity>;
+  entitiesArray: IEntity[];
+  collisionContainer: System;
+  collisionBodies: Record<string, Box>;
+
+  tryMovePlayer(playerId: string, movementInput: IMovementInput): { targetX: number; targetY: number, collisions: ICollision[]};
 }
 
 export type IEntity = {
@@ -89,8 +106,20 @@ export type IGameTickEvents = {
 }
 
 
+export type ITiles = {
+  type: ITilesId;
+  x: number;
+  y: number;
+}
+
+export type IChunk = ITiles[][];
+
+
 export type IGameState = {
-  
+  entities: Record<string, IEntity>;  
+  entitiesArray: IEntity[];
+  currentTick: number;
+  loadedChunks: [];
 }
 
 export type IGameTickData = {
@@ -98,7 +127,6 @@ export type IGameTickData = {
   entitiesArray: IEntity[];
   gameTickEvents: IGameTickEvents[];
 }
-
 
 
 

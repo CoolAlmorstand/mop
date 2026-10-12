@@ -1,9 +1,8 @@
 
 
-import type { IEntityType } from "./types.ts"
+import type { IEntityType, IGameState, IMovementInput, IEntity, ISumaltionCore, ICollision } from "./types.ts"
+import { Box, System } from "check2d"
 export * from "./types.ts"
-
-
 
 type entityStats = {
   speed: number,
@@ -38,8 +37,47 @@ export const ENTITIES_BASE_STATS: Record<IEntityType, entityStats> = {
 }
 
 
-export function movePlayer() {
 
+export class SimulationCore implements ISumaltionCore {
+  entities: Record<string, IEntity> = {};
+  entitiesArray: IEntity[] = [];
+  collisionContainer: System = new System();
+  collisionBodies: Record<string, Box> = {};
+  
+  constructor() {
+
+  }
+
+  tryMovePlayer(playerId: string, movementInput: IMovementInput): { targetX: number; targetY: number; collisions: ICollision[] } {
+    const player = this.entities[playerId]
+    const playerBody = this.collisionBodies[playerId]
+    const targetX = player.x + movementInput.x * movementInput.scale * player.speed
+    const targetY = player.y + movementInput.y * movementInput.scale * player.speed
+    const collisions: ICollision[] = []
+    const bodyIds = new Map(Object.entries(this.collisionBodies).map(([id, body]) => [body, id]))
+
+    playerBody.setPosition(targetX, targetY)
+    this.collisionContainer.checkOne(playerBody, (response) => {
+      collisions.push({
+        pushOutVector: {
+          x: -response.overlapN.x,
+          y: -response.overlapN.y,
+          scale: response.overlap
+        },
+        collidedWithId: bodyIds.get(response.b)!
+      })
+
+      return false
+    })
+    playerBody.setPosition(player.x, player.y)
+
+    collisions.sort((first, second) => {
+      const firstEntity = this.entities[first.collidedWithId]
+      const secondEntity = this.entities[second.collidedWithId]
+      return Math.hypot(firstEntity.x - player.x, firstEntity.y - player.y) -
+        Math.hypot(secondEntity.x - player.x, secondEntity.y - player.y)
+    })
+
+    return { targetX, targetY, collisions }
+  }
 }
-
-
