@@ -82,8 +82,19 @@ export class SimulationCore implements ISumaltionCore {
   }
 
   moveEntity(entityId: string, x: number, y: number): void {
-    this.entities[entityId].x = x
-    this.entities[entityId].y = y
+    const player = this.entities[entityId]
+    const deltaX = x - player.x
+    const deltaY = y - player.y
+
+    if (deltaX !== 0 || deltaY !== 0) {
+      const directions = ["n", "ne", "e", "se", "s", "sw", "w", "nw"] as const
+      const angle = Math.atan2(deltaX, -deltaY)
+      const directionIndex = Math.floor((angle + Math.PI / 8 + Math.PI * 2) % (Math.PI * 2) / (Math.PI / 4))
+      player.direction = directions[directionIndex]
+    }
+
+    player.x = x
+    player.y = y
 
     this.collisionBodies[entityId].x = x
     this.collisionBodies[entityId].y = y
