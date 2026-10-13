@@ -1,5 +1,5 @@
 import type { Texture } from "pixi.js";
-import type { ITilesId, IEntityType } from "@mop/simulation-engine"
+import type { ITilesId, IEntityType } from "@mop/simulation-core"
 import type { Spritesheet } from "pixi.js";
 
 
@@ -41,4 +41,3 @@ export type IEntitySpritesheet = {
 
 export type IEntitySpritesheets = Record<spritesheetName, IEntitySpritesheet>
 export type IEntitiesSpritesheets = Record<IEntityType, IEntitySpritesheets>
-

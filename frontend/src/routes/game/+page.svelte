@@ -3,7 +3,7 @@
   import { PixiRenderer } from "$lib/renderer/renderer";
   import { PixiMapRenderer } from "$lib/renderer/map-renderer/map-renderer";
   import { GameClient } from "$lib/game-client/game-client";
-  import { SimulationEngine } from "@mop/simulation-engine"
+  import { SimulationCore } from "@mop/simulation-core/src/index.ts"
   import { PixiEnitityRenderer } from "$lib/renderer/entity-renderer/entity-render";
   import { GameSocket } from "$lib/sockets/game";
   import { Controls } from "$lib/controls/controls";
@@ -18,9 +18,9 @@
 
   onMount(async() => {
     const app = await createPixiApp(divContainer.clientWidth, divContainer.clientHeight, divContainer)
-    const simulation = new SimulationEngine()
-    const gameSocket = new GameSocket(simulation)
-    const gameClient = new GameClient(simulation, gameSocket)
+    const simulation = new SimulationCore()
+    const gameClient = new GameClient(simulation)
+    const gameSocket = new GameSocket(gameClient)
 
     const tilesTextureMap = await getTileTextureMap()
     const entitySpriteSheets = await loadEntitySpritesheets()
@@ -28,11 +28,11 @@
     const mapRenderer = new PixiMapRenderer(tilesTextureMap)
     const entityRenderer = new PixiEnitityRenderer(entitySpriteSheets)
 
-    const renderer = new PixiRenderer(app, mapRenderer, entityRenderer, simulation)
+    const renderer = new PixiRenderer(app, mapRenderer, entityRenderer, gameClient)
 
     await gameClient.initializeGame()
 
-    const controls = new Controls(gameClient, simulation, renderer, app.screen.width, app.screen.height)
+    const controls = new Controls(gameClient, renderer, app.screen.width, app.screen.height)
 
     renderer.renderTest()
   })

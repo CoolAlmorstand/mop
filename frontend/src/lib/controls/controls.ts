@@ -1,9 +1,8 @@
 import type { IMopControls } from "$lib/interfaces/controls";
 import { Container, Sprite, Text, Texture, Rectangle, type ContainerChild, type FederatedPointerEvent } from "pixi.js";
 import type { IMopRenderer } from "$lib/interfaces/renderer";
-import type { ISimulationEngine } from "@mop/simulation-engine";
 import type { IGameClient } from "$lib/interfaces/game-client";
-import type { IMovementInput } from "@mop/simulation-engine";
+import type { IMovementInput } from "@mop/simulation-core";
 
 
 export class Controls implements IMopControls {
@@ -15,7 +14,6 @@ export class Controls implements IMopControls {
   private controlsContainer: Container = new Container();
 
   private gameClient: IGameClient;
-  private simulation: ISimulationEngine;
   private renderer: IMopRenderer
   private screenWidth: number;
   private screenHeight: number;
@@ -35,11 +33,10 @@ export class Controls implements IMopControls {
 
   private buttons: Record<string, ContainerChild> = {};
 
-  constructor(gameClient: IGameClient, simulation: ISimulationEngine, renderer: IMopRenderer, screenWidth: number, screenHeight: number) {
+  constructor(gameClient: IGameClient, renderer: IMopRenderer, screenWidth: number, screenHeight: number) {
     this.gameClient = gameClient;
     this.screenWidth = screenWidth; 
     this.screenHeight = screenHeight;
-    this.simulation = simulation;
     this.renderer = renderer;
 
     this.setupButtonDefinitions()
@@ -105,7 +102,7 @@ export class Controls implements IMopControls {
   }
 
   private setupGameListeners() {
-    this.simulation.event.on("gameTick", () => {
+    this.gameClient.event.on("gameTick", () => {
       this.gameClient.movePlayer(this.joystickInputVector)
     })
   }
@@ -346,4 +343,3 @@ export class Controls implements IMopControls {
     })
   }
 }
-

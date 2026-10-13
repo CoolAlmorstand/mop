@@ -1,0 +1,12 @@
+{
+  "name": "@mop/simulation-core",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "types": "./src/types.ts",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "check2d": "^9.36.4",
+    "eventemitter3": "^5.0.4"
+  }
+}

@@ -1,43 +1,82 @@
 import type { IGameClient } from "$lib/interfaces/game-client";
-import type { IGameSocket } from "$lib/interfaces/game-socket";
-import type { IMovementInput, ISimulationEngine } from "@mop/simulation-engine";
-
+import type { GameClientEvents } from "$lib/interfaces/game-client";
+import type { IGameTickData, IMovementInput } from "@mop/simulation-core"
+import { SimulationCore } from "@mop/simulation-core/src/index.ts"
+import { EventEmitter } from "eventemitter3"
 
 export class GameClient implements IGameClient {
 
-  private simulation: ISimulationEngine;
-  private gameSocket: IGameSocket;
+  event = new EventEmitter<GameClientEvents>()
+  private simulation: SimulationCore;
   private playerId!: string;
+  private tickSpeed = 20;
+  private tickInterval?: ReturnType<typeof setInterval>;
 
-  constructor(simulation: ISimulationEngine, gameSocket: IGameSocket) {
+  constructor(simulation: SimulationCore) {
     this.simulation = simulation
-    this.gameSocket = gameSocket
   }
 
   movePlayer(input: IMovementInput): void {
-    if(this.playerId) {
-      this.simulation.movePlayer(input, this.playerId) 
-      this.gameSocket.movePlayer(input)
+
+    if( ( input.x == 0 && input.y == 0) || input.scale == 0 ) {
+      this.simulation.updateEntityCurrentAction(this.playerId, "player", "idle") 
+      return
+    }
+
+    this.simulation.updateEntityCurrentAction(this.playerId, "player", "running") 
+
+    const movementResult = this.simulation.tryMovePlayer(this.playerId, input) 
+
+    this.simulation.moveEntity(this.playerId, movementResult.targetX, movementResult.targetY)
+  }
+
+  start(): void {
+    if (this.tickInterval) return
+
+    this.tickInterval = setInterval(() => {
+      this.event.emit("gameTick", {
+        entities: this.simulation.entities,
+        entitiesArray: this.simulation.entitiesArray,
+        gameTickEvents: []
+      })
+    }, 1000 / this.tickSpeed)
+  }
+
+  updateGameStateFromTick(gameTickData: IGameTickData): void {
+    this.simulation.entities = gameTickData.entities
+    this.simulation.entitiesArray = gameTickData.entitiesArray
+  }
+
+  stop(): void {
+    if (!this.tickInterval) return
+
+    clearInterval(this.tickInterval)
+    this.tickInterval = undefined
+  }
+
+  setTickSpeed(tickSpeed: number): void {
+    if (tickSpeed <= 0) {
+      throw new Error("Tick speed must be greater than 0")
+    }
+
+    const wasRunning = this.tickInterval !== undefined
+    this.stop()
+    this.tickSpeed = tickSpeed
+
+    if (wasRunning) {
+      this.start()
     }
   }
 
   async initializeGame(): Promise<void> {
-
-    //connect to server
-    //
-    //get from server from initial socket connection
-    const { playerId, username } = await this.gameSocket.joinGame("20")
-
-    console.log(playerId, username)
-
-    this.simulation.spawnNewPlayer(playerId, username)
-    this.simulation.start()
+    
+    const playerId = "1"
+    const username = "timothy"
+    
     this.playerId = playerId
+    this.simulation.spawnPlayer(username, playerId, 20, 20)
+    this.start()
   }
 }
-
-
-
-
 
 

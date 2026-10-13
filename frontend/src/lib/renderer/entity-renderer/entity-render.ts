@@ -1,5 +1,5 @@
 import type { IEntityRenderer } from "$lib/interfaces/entity-renderer";
-import type { IEntity, IEntityType } from "@mop/simulation-engine";
+import type { IEntity, IEntityType } from "@mop/simulation-core";
 import type { IRenderEntity } from "$lib/interfaces/render-entity";
 
 import { Container } from "pixi.js";
@@ -38,13 +38,14 @@ export class PixiEnitityRenderer implements IEntityRenderer {
   }
 
   moveEntity(entity: IEntity): void {
-    const renderEntity = this.entities[entity.id]
-    if (!renderEntity) {
+    if (!this.entities[entity.id]) {
       //temporaty for test
       this.createNewEntity(entity.type, entity.id, entity.name)
       //return
     }
 
+    const renderEntity = this.entities[entity.id]
+    
     renderEntity.container.position.set(entity.x, entity.y)
     renderEntity.direction = entity.direction
 
