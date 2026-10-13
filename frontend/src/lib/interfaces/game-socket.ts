@@ -1,5 +1,5 @@
 
-import type { IMovementInput } from "@mop/simulation-engine"
+import type { IMovementInput } from "@mop/simulation-core"
 
 
 

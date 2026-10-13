@@ -17,7 +17,17 @@ export class GameClient implements IGameClient {
   }
 
   movePlayer(input: IMovementInput): void {
-    
+
+    if( ( input.x == 0 && input.y == 0) || input.scale == 0 ) {
+      this.simulation.updateEntityCurrentAction(this.playerId, "player", "idle") 
+      return
+    }
+
+    this.simulation.updateEntityCurrentAction(this.playerId, "player", "running") 
+
+    const movementResult = this.simulation.tryMovePlayer(this.playerId, input) 
+
+    this.simulation.moveEntity(this.playerId, movementResult.targetX, movementResult.targetY)
   }
 
   start(): void {

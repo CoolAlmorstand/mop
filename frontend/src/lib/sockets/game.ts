@@ -1,35 +1,35 @@
 import { io } from "socket.io-client"
 import type { Socket } from "socket.io-client"
 
-import type { IGameSocket } from "$lib/interfaces/game-socket";
-import type { IMovementInput, ISimulationEngine } from "@mop/simulation-engine";
 import type { IGameSocketClientToServer, IGameSocketServerToClient } from "@mop/shared-types"
+import type { IGameClient } from "$lib/interfaces/game-client";
 
 
 const serverUrl = import.meta.env.VITE_SERVER_URL
 
 
-export class GameSocket implements IGameSocket {
+export class GameSocket {
 
-  private simulation: ISimulationEngine;
+  private gameClient: IGameClient;
   private io: Socket<IGameSocketServerToClient, IGameSocketClientToServer>;
 
-  constructor(simulation: ISimulationEngine) {
-    this.simulation = simulation
+  constructor(gameClient: IGameClient) {
+    this.gameClient = gameClient
     this.io = io(`${serverUrl}/game`)
 
     this.io.on("gameTick", (gameTickData) => {
-      console.log("game has ticked")
-      this.simulation.updateGameStateFromTick(gameTickData) 
+      this.gameClient.updateGameStateFromTick({
+        ...gameTickData,
+        gameTickEvents: []
+      })
     })
-  }
 
-  async movePlayer(movementInput: IMovementInput): Promise<void> {
-    this.io.emit("playerMove", movementInput) 
-  }
+    this.gameClient.event.on("playerMove", (movementInput) => {
+      this.io.emit("playerMove", movementInput)
+    })
 
-  async joinGame(gameId: string): Promise<{ playerId: string; username: string; }> {
-    const { playerId, username } = await this.io.emitWithAck("joinGame", {gameId}) 
-    return { playerId, username }
+    this.gameClient.event.on("joinGame", (gameId, resolve, reject) => {
+      this.io.emitWithAck("joinGame", { gameId }).then(resolve, reject)
+    })
   }
 }

@@ -1,5 +1,5 @@
 import type { IRenderEntity } from "$lib/interfaces/render-entity";
-import type { IEntityDirection } from "@mop/simulation-engine";
+import type { IEntityDirection } from "@mop/simulation-core";
 import type { IEntitySpritesheets, IEntitySpritesheet } from "$lib/types";
 
 import { AnimatedSprite, Container, Spritesheet, Text } from "pixi.js";
